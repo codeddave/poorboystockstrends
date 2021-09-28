@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const useSearch = (
+export const useSearch = (
   apiFn: (searchQuery: string) => any
 ): {
   searchQuery: string;
@@ -48,5 +48,3 @@ const useSearch = (
     fetchedData,
   };
 };
-
-export default useSearch;
