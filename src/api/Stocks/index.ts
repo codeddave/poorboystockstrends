@@ -11,3 +11,25 @@ export const getStockInfo = async (symbol: string) => {
     console.log(error);
   }
 };
+
+export const getForexInfo = async (forexPairSymbol: string) => {
+  try {
+    const res = await axios.get(
+      `${twelveDataUrl}/forex_pairs?symbol=${forexPairSymbol}`
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCryptoInfo = async (cryptoSymbol: string) => {
+  try {
+    const res = await axios.get(
+      `${twelveDataUrl}/cryptocurrencies?symbol=${cryptoSymbol}`
+    );
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
