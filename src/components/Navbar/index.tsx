@@ -15,34 +15,58 @@ export const Navbar = () => {
           </NavLink>
         </div>
         <div>
-          <NavLink to="/stocks" className=" cursor-pointer ">
+          <NavLink
+            to="/stocks"
+            className=" cursor-pointer "
+            activeClassName="nav-active"
+          >
             Stocks
           </NavLink>
-          <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
+          <NavLink
+            to="/forex"
+            className="ml-2 md:ml-4 cursor-pointer "
+            activeClassName="nav-active"
+          >
             Forex
           </NavLink>
-          <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
+          <NavLink
+            to="/crypto"
+            className="ml-2 md:ml-4 cursor-pointer"
+            activeClassName="nav-active"
+          >
             Crypto
           </NavLink>
-          <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
+          {/*      <NavLink
+            to="/"
+            className="ml-2 md:ml-4 cursor-pointer"
+            activeClassName="nav-active"
+          >
             Indexes
           </NavLink>
           <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
             Commodities
-          </NavLink>
-          <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
+          </NavLink> */}
+          <NavLink to="/profile" className="ml-2 md:ml-4 cursor-pointer">
             Profile
           </NavLink>
-          <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
+          <NavLink to="/about-us" className="ml-2 md:ml-4 cursor-pointer">
             About Us
           </NavLink>
         </div>
 
         <div>
-          <NavLink to="/login" className=" cursor-pointer">
+          <NavLink
+            to="/login"
+            className=" cursor-pointer"
+            activeClassName="nav-active"
+          >
             Login
           </NavLink>
-          <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
+          <NavLink
+            to="/register"
+            className="ml-2 md:ml-4 cursor-pointer"
+            activeClassName="nav-active"
+          >
             Register
           </NavLink>
         </div>
