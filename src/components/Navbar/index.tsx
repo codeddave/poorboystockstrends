@@ -9,7 +9,7 @@ export const Navbar = () => {
         <div>
           <NavLink
             to="/"
-            className="ml-2 md:ml-4 font-bold text-xl cursor-pointer"
+            className="ml-2 md:ml-6 font-bold text-xl cursor-pointer"
           >
             POORBOY STOCKS TRENDS
           </NavLink>
@@ -24,32 +24,32 @@ export const Navbar = () => {
           </NavLink>
           <NavLink
             to="/forex"
-            className="ml-2 md:ml-4 cursor-pointer "
+            className="ml-2 md:ml-6 cursor-pointer "
             activeClassName="nav-active"
           >
             Forex
           </NavLink>
           <NavLink
             to="/crypto"
-            className="ml-2 md:ml-4 cursor-pointer"
+            className="ml-2 md:ml-6 cursor-pointer"
             activeClassName="nav-active"
           >
             Crypto
           </NavLink>
           {/*      <NavLink
             to="/"
-            className="ml-2 md:ml-4 cursor-pointer"
+            className="ml-2 md:ml-6 cursor-pointer"
             activeClassName="nav-active"
           >
             Indexes
           </NavLink>
-          <NavLink to="/" className="ml-2 md:ml-4 cursor-pointer">
+          <NavLink to="/" className="ml-2 md:ml-6 cursor-pointer">
             Commodities
           </NavLink> */}
-          <NavLink to="/profile" className="ml-2 md:ml-4 cursor-pointer">
+          <NavLink to="/profile" className="ml-2 md:ml-6 cursor-pointer">
             Profile
           </NavLink>
-          <NavLink to="/about-us" className="ml-2 md:ml-4 cursor-pointer">
+          <NavLink to="/about-us" className="ml-2 md:ml-6 cursor-pointer">
             About Us
           </NavLink>
         </div>
@@ -64,7 +64,7 @@ export const Navbar = () => {
           </NavLink>
           <NavLink
             to="/register"
-            className="ml-2 md:ml-4 cursor-pointer"
+            className="ml-2 md:ml-6 cursor-pointer"
             activeClassName="nav-active"
           >
             Register

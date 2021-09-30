@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { Footer, Navbar } from "./components";
 import MainLayOut from "./components/MainAppLayout";
+import Forex from "./pages/Forex";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Stocks from "./pages/Stocks";
@@ -20,8 +21,9 @@ const App: FC = () => {
         <MainLayOut>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/stocks" component={Stocks} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/stocks" component={Stocks} />
+            <Route exact path="/forex" component={Forex} />
           </Switch>
         </MainLayOut>
         <Footer />
