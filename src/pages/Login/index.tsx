@@ -2,7 +2,8 @@
 
 import { Field, Form, Formik } from "formik";
 import CustomFormInput from "../../components/Form/CustomFormInput";
-
+import { HiOutlineMail } from "react-icons/hi";
+import { VscLock } from "react-icons/vsc";
 const initialValues = {
   email: " ",
   password: "",
@@ -20,14 +21,14 @@ const Login = () => {
               component={CustomFormInput}
               name="email"
               type="email"
-              placeholder="Email..."
               title="Email"
+              icon={HiOutlineMail}
             />
             <Field
               component={CustomFormInput}
               name="password"
-              placeholder="Password..."
               title="Password"
+              icon={VscLock}
             />
           </Form>
         )}
