@@ -20,17 +20,18 @@ const CustomFormInput: FC<CustomFormInputProps & FieldProps> = ({
     <>
       {Icon ? (
         <>
-          <label htmlFor={field.name} className="text-sm ">
+          <label htmlFor={field.name} className="text-sm mb-3 pt-13">
             {title}
           </label>
 
-          <div className="flex  items-center bg-white w-full rounded pl-2  h-11">
+          <div className="flex  items-center bg-blue-100 w-full rounded pl-2  h-11 mb-3">
             <Icon className="text-gray-500" size={20} />
             <input
               type={type}
               placeholder={placeholder}
               {...field}
-              className="py-2 h-full w-full bg-white rounded pl-1 outline-none text-gray-700 "
+              id={field.name}
+              className="py-2 h-full w-full bg-blue-100 rounded pl-1.5 outline-none text-gray-700 placeho"
             />
           </div>
 
@@ -47,7 +48,7 @@ const CustomFormInput: FC<CustomFormInputProps & FieldProps> = ({
             type={type}
             placeholder={placeholder}
             {...field}
-            className="py-2 mt-3 w-full bg-white rounded pl-2 outline-none text-gray-700"
+            className="py-2 mt-3 w-full bg-blue-100 rounded pl-2 outline-none text-gray-700"
           />
           {errors[field.name] && touched[field.name] ? (
             <span className="text-red-700">{errors[field.name]}</span>
