@@ -4,8 +4,8 @@ import { FC } from "react";
 //max-h-screen overflow-y-scroll
 const MainLayOut: FC = ({ children }) => {
   return (
-    <section className="grid grid-cols-4 flex-grow t-10 md:pt-20 ">
-      <div className=" flex flex-col items-center px-2  text-center  ">
+    <section className="grid md:grid-cols-4 flex-grow t-10 md:pt-20 ">
+      <div className=" hidden md:flex flex-col items-center px-2  text-center  ">
         <p>tevihvksdv</p>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis hic,
@@ -15,9 +15,9 @@ const MainLayOut: FC = ({ children }) => {
         </p>
       </div>
 
-      <div className=" col-span-2">{children}</div>
+      <div className=" md:col-span-2">{children}</div>
 
-      <div className="flex flex-col items-center px-4">
+      <div className="hidden md:flex flex-col items-center px-4">
         <p>jekbvJEBvjbdjbv</p>
       </div>
     </section>
