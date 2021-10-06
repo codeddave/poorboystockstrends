@@ -9,6 +9,7 @@ import MainLayOut from "./components/MainAppLayout";
 import Forex from "./pages/Forex";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Stocks from "./pages/Stocks";
 
 //import "./App.css";
@@ -22,6 +23,8 @@ const App: FC = () => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+
             <Route exact path="/stocks" component={Stocks} />
             <Route exact path="/forex" component={Forex} />
           </Switch>
