@@ -9,7 +9,7 @@ const initialValues = {
 };
 const Register = () => {
   return (
-    <div className="mx-auto w-3/4">
+    <div className="mx-auto w-4/6 md:w-3/4">
       <Formik
         initialValues={initialValues}
         onSubmit={() => console.log("bhdvhjveEJEVVVJBe")}

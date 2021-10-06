@@ -10,7 +10,7 @@ const initialValues = {
 };
 const Login = () => {
   return (
-    <div>
+    <div className="mx-auto w-3/4">
       <Formik
         initialValues={initialValues}
         onSubmit={() => console.log("bhdvhjveEJEVVVJBe")}

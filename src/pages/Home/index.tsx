@@ -2,7 +2,7 @@
 
 const Home = () => {
   return (
-    <section className="text-center pt-10 md:pt-20 flex-grow">
+    <section className="text-center flex-grow">
       <h1 className=" text-2xl md:text-5xl font-bold leading-snug tracking-wider">
         PoorBoy Stocks Trends
       </h1>
