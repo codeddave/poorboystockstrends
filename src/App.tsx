@@ -17,7 +17,7 @@ import Stocks from "./pages/Stocks";
 const App: FC = () => {
   return (
     <Router>
-      <div className="bg-blue  text-white bg-blue-900 flex flex-col h-full overflow-hidden min-h-screen">
+      <div className="bg-blue  text-white bg-blue-900 flex flex-col h-full overflow-hidden min-h-screen relative">
         <Navbar />
         <MainLayOut>
           <Switch>
