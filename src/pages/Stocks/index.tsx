@@ -45,7 +45,7 @@ const Stocks: FC = () => {
               {/* ,
               <span className=" text-sm lg:text-lg ">
                 &nbsp; {stock.exchange}
-              </span> */}
+              </span>  */}
             </li>
           ))}
         </ul>

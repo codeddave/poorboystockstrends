@@ -18,7 +18,7 @@ const Forex: FC = () => {
   console.log(forexData);
   return (
     <div className="flex-grow">
-      <p className="text-center text-xl ">Forex Search</p>
+      <p className="text-center text-xl ">Forex Search </p>
       <div className="w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2">
         <input
           className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
