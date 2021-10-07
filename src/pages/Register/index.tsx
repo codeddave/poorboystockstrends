@@ -9,7 +9,8 @@ const initialValues = {
 };
 const Register = () => {
   return (
-    <div className="mx-auto md:3/4 px-2 md:px-o">
+    <div className="mx-auto md:3/4 px-2 md:px-0">
+      <p className="text-center text-2xl mb-2 tracking-wider">Register</p>
       <Formik
         initialValues={initialValues}
         onSubmit={() => console.log("bhdvhjveEJEVVVJBe")}

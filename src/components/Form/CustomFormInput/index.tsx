@@ -20,11 +20,11 @@ const CustomFormInput: FC<CustomFormInputProps & FieldProps> = ({
     <>
       {Icon ? (
         <>
-          <label htmlFor={field.name} className="text-sm mb-3 pt-13">
+          <label htmlFor={field.name} className="text-sm pt-13">
             {title}
           </label>
 
-          <div className="flex  items-center bg-blue-100 w-full rounded pl-2  h-11 mb-4 shadow-2xl">
+          <div className="flex  items-center bg-blue-100 w-full rounded pl-2 mt-2 h-11 mb-4 shadow-2xl">
             <Icon className="text-gray-500" size={20} />
             <input
               type={type}
