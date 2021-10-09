@@ -3,6 +3,7 @@ import { FC } from "react";
 import { getStockInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
+import StocksChart from "./StocksChart";
 const Stocks: FC = () => {
   const {
     fetchedData: stockData,
@@ -32,9 +33,9 @@ const Stocks: FC = () => {
       </div>
       {searchQuery && !selectedStock ? (
         <ul className="mt-2 w-full lg:w-2/3 mx-auto bg-white  divide-y rounded">
-          {stockData?.data?.map((stock: any) => (
+          {stockData?.data?.map((stock: any, index) => (
             <li
-              key={stock.name}
+              key={index}
               onClick={() => handleSelectedStock(stock.symbol)}
               className=" px-3 text-xs md:text-lg text-black py-1 hover:bg-blue-600 hover:text-gray-200  flex"
             >
@@ -50,6 +51,7 @@ const Stocks: FC = () => {
           ))}
         </ul>
       ) : null}
+      {selectedStock ? <StocksChart ticker={selectedStock} /> : null}
     </div>
   );
 };
