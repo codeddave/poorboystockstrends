@@ -50,7 +50,7 @@ const StocksChart: FC<Props> = ({ ticker }) => {
     charts: [
       {
         title: {
-          text: "HLOC",
+          text: `${ticker}`,
         },
         data: [
           {
@@ -70,7 +70,7 @@ const StocksChart: FC<Props> = ({ ticker }) => {
   };
 
   return (
-    <div>
+    <div className="mt-6 w-11/12 mx-auto z-10">
       <CanvasJsStockChart options={options} onRef={test} />
     </div>
   );
