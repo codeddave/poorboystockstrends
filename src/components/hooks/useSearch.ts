@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
 export const useSearch = (
-  apiFn: (searchQuery: string) => any
+  apiFn: (searchQuery: string) => any,
+  setShowResults?: any
 ): {
   searchQuery: string;
   isLoading: boolean;
@@ -25,10 +26,11 @@ export const useSearch = (
 
     setIsLoading(false);
     setFetchedData(response);
+    setShowResults(true);
 
     //attempts to set search result empty when user clears input
     if (searchQuery === "") setFetchedData(null);
-  }, [searchQuery, apiFn]);
+  }, [searchQuery, apiFn, setShowResults]);
 
   useEffect(() => {
     if (searchQuery) {
