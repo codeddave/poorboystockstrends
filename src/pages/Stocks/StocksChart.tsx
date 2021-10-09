@@ -1,4 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
+import Loader from "react-loader-spinner";
 import { getStockChartInfo } from "../../api";
 import CanvasJSReact from "../../canvasjs.stock.react";
 
@@ -32,17 +33,20 @@ const StocksChart: FC<Props> = ({ ticker }) => {
       }
     }
   };
+  console.log(chartData);
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
   const handleStockChartInfo = useCallback(async () => {
     setIsLoading(true);
 
     const response = await getStockChartInfo(ticker, startDate, endDate);
-    if (isLoading && !chartData?.length) {
+    if (!chartData) {
       setChartData(response.values);
     }
-    setIsLoading(false);
-
     chartPush(chartData);
-  }, [ticker, chartData, isLoading]);
+    setIsLoading(false);
+  }, [ticker, chartData]);
   useEffect(() => {
     handleStockChartInfo();
   }, [ticker, handleStockChartInfo]);
@@ -71,7 +75,13 @@ const StocksChart: FC<Props> = ({ ticker }) => {
 
   return (
     <div className="mt-6 w-11/12 mx-auto z-10">
-      <CanvasJsStockChart options={options} onRef={test} />
+      {isLoading || !chartData ? (
+        <div className="flex justify-center mt-6">
+          <Loader type="TailSpin" color="#fff" height={70} width={50} />
+        </div>
+      ) : (
+        <CanvasJsStockChart options={options} onRef={test} />
+      )}
     </div>
   );
 };
