@@ -2,6 +2,7 @@ import { Field, Form, Formik } from "formik";
 import CustomFormInput from "../../components/Form/CustomFormInput";
 import { HiOutlineMail, HiOutlineUser } from "react-icons/hi";
 import { VscLock } from "react-icons/vsc";
+import { RegisterSchema } from "../../definitions/Yup";
 const initialValues = {
   username: "",
   email: " ",
@@ -13,6 +14,7 @@ const Register = () => {
       <p className="text-center text-2xl mb-5 tracking-wider">Register</p>
       <Formik
         initialValues={initialValues}
+        validationSchema={RegisterSchema}
         onSubmit={() => console.log("bhdvhjveEJEVVVJBe")}
       >
         {() => (

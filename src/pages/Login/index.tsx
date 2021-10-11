@@ -4,6 +4,7 @@ import { Field, Form, Formik } from "formik";
 import CustomFormInput from "../../components/Form/CustomFormInput";
 import { HiOutlineMail } from "react-icons/hi";
 import { VscLock } from "react-icons/vsc";
+import { LoginSchema } from "../../definitions/Yup";
 const initialValues = {
   email: " ",
   password: "",
@@ -15,6 +16,7 @@ const Login = () => {
 
       <Formik
         initialValues={initialValues}
+        validationSchema={LoginSchema}
         onSubmit={() => console.log("bhdvhjveEJEVVVJBe")}
       >
         {() => (
