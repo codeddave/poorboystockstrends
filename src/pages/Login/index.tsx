@@ -2,11 +2,12 @@
 
 import { Field, Form, Formik } from "formik";
 import CustomFormInput from "../../components/Form/CustomFormInput";
-import { HiOutlineMail } from "react-icons/hi";
+import { HiOutlineUser } from "react-icons/hi";
 import { VscLock } from "react-icons/vsc";
 import { LoginSchema } from "../../definitions/Yup";
+
 const initialValues = {
-  email: " ",
+  username: "",
   password: "",
 };
 const Login = () => {
@@ -23,10 +24,10 @@ const Login = () => {
           <Form>
             <Field
               component={CustomFormInput}
-              name="email"
-              type="email"
-              title="Email"
-              icon={HiOutlineMail}
+              name="username"
+              type="text"
+              title="Username"
+              icon={HiOutlineUser}
             />
             <Field
               component={CustomFormInput}
@@ -34,6 +35,11 @@ const Login = () => {
               title="Password"
               icon={VscLock}
             />
+            <div className="flex justify-center mt-8">
+              <button className="border-white border py-2 px-4 rounded text-white mx-auto w-40  hover:bg-blue-50 hover:text-gray-600 ">
+                Login
+              </button>
+            </div>
           </Form>
         )}
       </Formik>
