@@ -15,6 +15,65 @@ const Stocks: FC = () => {
   const [showResults, setShowResults] = useState(true);
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
 
+  const renderTabDetails = (currentTab: TabTypes) => {
+    switch (currentTab) {
+      case TabTypes.performance:
+        return (
+          <>
+            <p className="text-center text-xl pt-4 md:pt-12">Stocks Search</p>
+            <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
+              <input
+                className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
+                placeholder="Search..."
+                onChange={handleChange}
+                value={searchQuery}
+              />
+
+              {isLoading ? (
+                <Loader
+                  type="TailSpin"
+                  color="#000000"
+                  height={25}
+                  width={30}
+                />
+              ) : null}
+            </div>
+            {searchQuery && showResults ? (
+              <ul className="mt-2 w-full lg:w-2/3 mx-aut0 bg-white flex flex-col divide-y rounded top-0 absolute right-0 z-40">
+                {stockData?.data ? (
+                  <div className="w-full absolute top-0 ">
+                    <AutoSizer>
+                      {({ width, height }) => {
+                        return (
+                          <List
+                            width={width}
+                            height={height}
+                            rowCount={stockData!.data.length}
+                            rowHeight={30}
+                            rowRenderer={rowRenderer}
+                          />
+                        );
+                      }}
+                    </AutoSizer>
+                  </div>
+                ) : null}
+              </ul>
+            ) : null}
+            {selectedStock ? <StocksChart ticker={selectedStock} /> : null}
+          </>
+        );
+      case TabTypes.dailyMatchTrend:
+        return <p>Daily Match Trend</p>;
+      case TabTypes.correlation:
+        return <p>Correlation</p>;
+      case TabTypes.sameMonthCorrelation:
+        return <p>Same Month Correlation</p>;
+      case TabTypes.linearRegression:
+        return <p>Linear Regression</p>;
+      case TabTypes.equations:
+        return <p>Equations</p>;
+    }
+  };
   const {
     fetchedData: stockData,
     isLoading,
@@ -104,47 +163,7 @@ const Stocks: FC = () => {
           </Tab>
         </nav>
       </div>
-      {tab === TabTypes.performance ? (
-        <>
-          <p className="text-center text-xl pt-12">Stocks Search</p>
-          <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
-            <input
-              className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
-              placeholder="Search..."
-              onChange={handleChange}
-              value={searchQuery}
-            />
-
-            {isLoading ? (
-              <Loader type="TailSpin" color="#000000" height={25} width={30} />
-            ) : null}
-          </div>
-          {searchQuery && showResults ? (
-            <ul className="mt-2 w-full lg:w-2/3 mx-aut0 bg-white flex flex-col divide-y rounded top-0 absolute right-0 z-40">
-              {stockData?.data ? (
-                <div className="w-full absolute top-0 ">
-                  <AutoSizer>
-                    {({ width, height }) => {
-                      return (
-                        <List
-                          width={width}
-                          height={height}
-                          rowCount={stockData!.data.length}
-                          rowHeight={30}
-                          rowRenderer={rowRenderer}
-                        />
-                      );
-                    }}
-                  </AutoSizer>
-                </div>
-              ) : null}
-            </ul>
-          ) : null}
-          {selectedStock ? <StocksChart ticker={selectedStock} /> : null}
-        </>
-      ) : (
-        <p>heloooo</p>
-      )}
+      {renderTabDetails(tab)}
     </div>
   );
 };
