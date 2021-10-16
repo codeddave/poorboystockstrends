@@ -14,7 +14,7 @@ import { TabTypes } from "../../definitions";
 const Stocks: FC = () => {
   const [showResults, setShowResults] = useState(true);
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
-
+  console.log(showResults);
   const renderTabDetails = (currentTab: TabTypes) => {
     switch (currentTab) {
       case TabTypes.performance:
@@ -39,9 +39,9 @@ const Stocks: FC = () => {
               ) : null}
             </div>
             {searchQuery && showResults ? (
-              <ul className="mt-2 w-full lg:w-2/3 mx-aut0 bg-white flex flex-col divide-y rounded top-0 absolute right-0 z-40">
+              <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative z-20 border">
                 {stockData?.data ? (
-                  <div className="w-full absolute top-0 ">
+                  <div className="w-full h-64  bg-white z-30">
                     <AutoSizer>
                       {({ width, height }) => {
                         return (
@@ -51,6 +51,7 @@ const Stocks: FC = () => {
                             rowCount={stockData!.data.length}
                             rowHeight={30}
                             rowRenderer={rowRenderer}
+                            className="w-full"
                           />
                         );
                       }}
@@ -116,53 +117,51 @@ const Stocks: FC = () => {
   };
 
   return (
-    <div className="flex-grow relative">
-      <div>
-        <nav className="flex pb-8 flex-wrap w-full mx-auto">
-          <Tab
-            onClick={() => onTabClick(TabTypes.performance)}
-            width="1/6"
-            current={tab === TabTypes.performance}
-          >
-            Perfomance
-          </Tab>
-          <Tab
-            onClick={() => onTabClick(TabTypes.dailyMatchTrend)}
-            width="1/6"
-            current={tab === TabTypes.dailyMatchTrend}
-          >
-            Daily Match Trend
-          </Tab>
-          <Tab
-            onClick={() => onTabClick(TabTypes.correlation)}
-            width="1/6"
-            current={tab === TabTypes.correlation}
-          >
-            Correlation
-          </Tab>
-          <Tab
-            onClick={() => onTabClick(TabTypes.sameMonthCorrelation)}
-            width="1/6"
-            current={tab === TabTypes.sameMonthCorrelation}
-          >
-            Same Month Corellation
-          </Tab>
-          <Tab
-            onClick={() => onTabClick(TabTypes.linearRegression)}
-            width="1/6"
-            current={tab === TabTypes.linearRegression}
-          >
-            Linear Regression
-          </Tab>
-          <Tab
-            onClick={() => onTabClick(TabTypes.equations)}
-            width="1/6"
-            current={tab === TabTypes.equations}
-          >
-            Equations
-          </Tab>
-        </nav>
-      </div>
+    <div className="flex-grow  relative ">
+      <nav className="flex mb-8 pb-2 flex-wrap w-full mx-auto border di px-2">
+        <Tab
+          onClick={() => onTabClick(TabTypes.performance)}
+          width="1/6"
+          current={tab === TabTypes.performance}
+        >
+          Perfomance
+        </Tab>
+        <Tab
+          onClick={() => onTabClick(TabTypes.dailyMatchTrend)}
+          width="1/6"
+          current={tab === TabTypes.dailyMatchTrend}
+        >
+          Daily Match Trend
+        </Tab>
+        <Tab
+          onClick={() => onTabClick(TabTypes.correlation)}
+          width="1/6"
+          current={tab === TabTypes.correlation}
+        >
+          Correlation
+        </Tab>
+        <Tab
+          onClick={() => onTabClick(TabTypes.sameMonthCorrelation)}
+          width="1/6"
+          current={tab === TabTypes.sameMonthCorrelation}
+        >
+          Same Month Corellation
+        </Tab>
+        <Tab
+          onClick={() => onTabClick(TabTypes.linearRegression)}
+          width="1/6"
+          current={tab === TabTypes.linearRegression}
+        >
+          Linear Regression
+        </Tab>
+        <Tab
+          onClick={() => onTabClick(TabTypes.equations)}
+          width="1/6"
+          current={tab === TabTypes.equations}
+        >
+          Equations
+        </Tab>
+      </nav>
       {renderTabDetails(tab)}
     </div>
   );
