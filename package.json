@@ -1,6 +1,7 @@
 {
   "name": "poorboystockstrends",
   "homepage": ".",
+  "proxy": "https://pbstbackend.herokuapp.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

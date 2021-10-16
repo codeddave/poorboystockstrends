@@ -15,7 +15,7 @@ const twelveDataUrl = "https://api.twelvedata.com";
 export const getStockInfo = async (symbol: string): Promise<any> => {
   try {
     const res = await axios.get(
-      `http://pbstbackend.herokuapp.com/v2/search_stock?name=${symbol}`
+      `https://pbstbackend.herokuapp.com/v2/search_stock?name=${symbol}`
     );
     return res;
   } catch (error) {
