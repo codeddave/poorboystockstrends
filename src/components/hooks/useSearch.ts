@@ -29,7 +29,7 @@ export const useSearch = (
         setIsLoading(false);
 
         setFetchedData(response);
-        setShowResults(true);
+        if (setShowResults) setShowResults(true);
       }, 800),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

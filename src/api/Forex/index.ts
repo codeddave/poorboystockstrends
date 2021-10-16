@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const twelveDataUrl = "https://api.twelvedata.com";
+const apiUrl = "https://pbstbackend.herokuapp.com/v2";
 
-export const getForexInfo = async (forexPairSymbol: string) => {
+export const getForexInfo = async (forexPairSymbol: string): Promise<any> => {
   try {
     const res = await axios.get(
-      `${twelveDataUrl}/forex_pairs?symbol=${forexPairSymbol}`
+      `${apiUrl}/search_forex?name=${forexPairSymbol}`
     );
-    return res.data;
+    return res;
   } catch (error) {
     console.log(error);
   }
