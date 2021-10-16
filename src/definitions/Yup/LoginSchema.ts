@@ -1,2 +1,6 @@
 import * as Yup from "yup";
-console.log(Yup);
+
+export const LoginSchema = Yup.object().shape({
+  username: Yup.string().required(),
+  password: Yup.string().required(),
+});

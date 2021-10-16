@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
+
+import debounce from "lodash.debounce";
 
 export const useSearch = (
   apiFn: (searchQuery: string) => any,
@@ -16,27 +18,28 @@ export const useSearch = (
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
 
+  const test = React.useMemo(
+    () =>
+      debounce(async (value: any) => {
+        if (value === "") return;
+        setIsLoading(true);
+
+        const response = await apiFn(value);
+        console.log(searchQuery);
+        setIsLoading(false);
+
+        setFetchedData(response);
+        setShowResults(true);
+      }, 800),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchQuery(e.target.value);
+
+    test(e.target.value);
   };
-
-  const handleSearch = useCallback(async () => {
-    setIsLoading(true);
-    const response = await apiFn(searchQuery);
-
-    setIsLoading(false);
-    setFetchedData(response);
-    setShowResults(true);
-
-    //attempts to set search result empty when user clears input
-    if (searchQuery === "") setFetchedData(null);
-  }, [searchQuery, apiFn, setShowResults]);
-
-  useEffect(() => {
-    if (searchQuery) {
-      handleSearch();
-    }
-  }, [searchQuery, handleSearch]);
 
   const handleSelectedItem = (item: string) => {
     setSelectedItem(item);
