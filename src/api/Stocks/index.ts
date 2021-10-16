@@ -1,5 +1,5 @@
 import axios from "axios";
-
+//import {toast} from "react-toastify"
 //export const baseUrl = "https://cloud.iexapis.com/stable";
 const twelveDataUrl = "https://api.twelvedata.com";
 //const url = "http://pbstbackend.herokuapp.com/v2";
@@ -14,7 +14,9 @@ const twelveDataUrl = "https://api.twelvedata.com";
 }; */
 export const getStockInfo = async (symbol: string): Promise<any> => {
   try {
-    const res = await axios.get(`v2/search_stock?name=${symbol}`);
+    const res = await axios.get(
+      `http://pbstbackend.herokuapp.com/v2/search_stock?name=${symbol}`
+    );
     return res;
   } catch (error) {
     console.log(error);
