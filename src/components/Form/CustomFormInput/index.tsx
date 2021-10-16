@@ -17,14 +17,14 @@ const CustomFormInput: FC<CustomFormInputProps & FieldProps> = ({
   icon: Icon,
 }) => {
   return (
-    <>
+    <section className="mb-3">
       {Icon ? (
         <>
-          <label htmlFor={field.name} className="text-sm pt-13">
+          <label htmlFor={field.name} className="text-sm ">
             {title}
           </label>
 
-          <div className="flex  items-center bg-blue-100 w-full rounded pl-2 mt-2 h-11 mb-4 shadow-2xl">
+          <div className="flex  items-center bg-blue-100 w-full rounded pl-2 mt-2 h-11 mb-2 shadow-2xl">
             <Icon className="text-gray-500" size={20} />
             <input
               type={type}
@@ -36,7 +36,7 @@ const CustomFormInput: FC<CustomFormInputProps & FieldProps> = ({
           </div>
 
           {errors[field.name] && touched[field.name] ? (
-            <span className="text-red-700">{errors[field.name]}</span>
+            <span className="text-red-600 ">{errors[field.name]}</span>
           ) : null}
         </>
       ) : (
@@ -55,7 +55,7 @@ const CustomFormInput: FC<CustomFormInputProps & FieldProps> = ({
           ) : null}
         </>
       )}
-    </>
+    </section>
   );
 };
 
