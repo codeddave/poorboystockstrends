@@ -118,7 +118,7 @@ const Stocks: FC = () => {
 
   return (
     <div className="flex-grow  relative ">
-      <nav className="flex mb-8 pb-2 flex-wrap w-full mx-auto border di px-2">
+      <nav className="flex mb-8 py-3 md:py-4 flex-wrap justify-center w-full mx-auto border di px-1 ">
         <Tab
           onClick={() => onTabClick(TabTypes.performance)}
           width="1/6"
