@@ -31,6 +31,7 @@ const Stocks: FC = () => {
                   { value: "Line", label: "Line" },
                   { value: "Area", label: "Area" },
                 ]}
+                isSearchable={false}
               />
             </div>
             <section className="border-t">
