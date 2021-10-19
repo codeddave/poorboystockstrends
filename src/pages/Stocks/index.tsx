@@ -19,8 +19,8 @@ const Stocks: FC = () => {
     switch (currentTab) {
       case TabTypes.performance:
         return (
-          <>
-            <p className="text-center text-xl pt-6 md:pt-12">Stocks Search</p>
+          <section className="border-t">
+            <p className="text-center text-xl pt-6 md:pt-12 ">Stocks Search</p>
             <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
               <input
                 className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
@@ -61,7 +61,7 @@ const Stocks: FC = () => {
               </ul>
             ) : null}
             {selectedStock ? <StocksChart ticker={selectedStock} /> : null}
-          </>
+          </section>
         );
       case TabTypes.dailyMatchTrend:
         return <p>Daily Match Trend</p>;
@@ -109,7 +109,7 @@ const Stocks: FC = () => {
         key={key}
         style={style}
         onClick={() => handleStockSelect(stockData?.data[index]?.symbol)}
-        className="px-3 text-xs md:text-lg text-black p hover:bg-blue-600 pb-6 hover:text-gray-200 w-fulL border-b h-50 absolute  t0p-0 z-50   flex"
+        className="pl-2.5 py text-xs md:text-lg text-black p hover:bg-blue-600  hover:text-gray-200    absolute  t0p-0 z-50 border-b  flex"
       >
         {stockData?.data[index]?.symbol}
       </li>
