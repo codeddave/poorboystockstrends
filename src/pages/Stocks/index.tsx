@@ -1,5 +1,7 @@
 //import { useState } from "react"
 import { FC, useState } from "react";
+import Select from "react-select";
+
 import { getStockInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
@@ -10,7 +12,7 @@ import { Tab } from "../../components/Tab";
 import { useTabs } from "../../components/hooks/useTabs";
 import { TabTypes } from "../../definitions";
 //import {MeasuredCellParent} from 'react-virtualized/dist/es/CellMeasurer'
-
+//create enum for chattypes
 const Stocks: FC = () => {
   const [showResults, setShowResults] = useState(true);
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
@@ -19,49 +21,64 @@ const Stocks: FC = () => {
     switch (currentTab) {
       case TabTypes.performance:
         return (
-          <section className="border-t">
-            <p className="text-center text-xl pt-6 md:pt-12 ">Stocks Search</p>
-            <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
-              <input
-                className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
-                placeholder="Search..."
-                onChange={handleChange}
-                value={searchQuery}
+          <>
+            <div className="w-40 pb-3">
+              <Select
+                placeholder="Chart Type"
+                className=" text-gray-600"
+                options={[
+                  { value: "CandleStick", label: "CandleStick" },
+                  { value: "Line", label: "Line" },
+                  { value: "Area", label: "Area" },
+                ]}
               />
-
-              {isLoading ? (
-                <Loader
-                  type="TailSpin"
-                  color="#000000"
-                  height={25}
-                  width={30}
-                />
-              ) : null}
             </div>
-            {searchQuery && showResults ? (
-              <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative z-20 border">
-                {stockData?.data ? (
-                  <div className="w-full h-64  bg-white z-30">
-                    <AutoSizer>
-                      {({ width, height }) => {
-                        return (
-                          <List
-                            width={width}
-                            height={height}
-                            rowCount={stockData!.data.length}
-                            rowHeight={30}
-                            rowRenderer={rowRenderer}
-                            className="w-full"
-                          />
-                        );
-                      }}
-                    </AutoSizer>
-                  </div>
+            <section className="border-t">
+              <p className="text-center text-xl pt-6 md:pt-12 ">
+                Stocks Search
+              </p>
+              <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
+                <input
+                  className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
+                  placeholder="Search..."
+                  onChange={handleChange}
+                  value={searchQuery}
+                />
+
+                {isLoading ? (
+                  <Loader
+                    type="TailSpin"
+                    color="#000000"
+                    height={25}
+                    width={30}
+                  />
                 ) : null}
-              </ul>
-            ) : null}
-            {selectedStock ? <StocksChart ticker={selectedStock} /> : null}
-          </section>
+              </div>
+              {searchQuery && showResults ? (
+                <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative z-20 border">
+                  {stockData?.data ? (
+                    <div className="w-full h-64  bg-white z-30">
+                      <AutoSizer>
+                        {({ width, height }) => {
+                          return (
+                            <List
+                              width={width}
+                              height={height}
+                              rowCount={stockData!.data.length}
+                              rowHeight={30}
+                              rowRenderer={rowRenderer}
+                              className="w-full"
+                            />
+                          );
+                        }}
+                      </AutoSizer>
+                    </div>
+                  ) : null}
+                </ul>
+              ) : null}
+              {selectedStock ? <StocksChart ticker={selectedStock} /> : null}
+            </section>
+          </>
         );
       case TabTypes.dailyMatchTrend:
         return <p>Daily Match Trend</p>;
@@ -117,8 +134,8 @@ const Stocks: FC = () => {
   };
 
   return (
-    <div className="flex-grow  relative ">
-      <nav className="flex mb-8 py-3 md:py-4 flex-wrap justify-center w-full mx-auto border di px-1 md:px-2 ">
+    <div className="flex-grow  relative  ">
+      <nav className="flex mb-8 py-3 md:py-4 flex-wrap justify-center w-full mx-auto border  px-1 md:px-2 ">
         <Tab
           onClick={() => onTabClick(TabTypes.performance)}
           width="1/6"
