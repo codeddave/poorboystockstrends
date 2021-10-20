@@ -4,21 +4,30 @@ import { getStockChartInfo } from "../../api";
 import CanvasJSReact from "../../canvasjs.stock.react";
 
 const CanvasJsStockChart = CanvasJSReact.CanvasJSStockChart;
-
+enum ChartTypes {
+  candleStick = "CandleStick",
+  area = "Area",
+  line = "Line",
+}
 type Props = {
   ticker: string;
+  chartType: ChartTypes;
 };
+
 let dataPoints1: any = [];
 
-const StocksChart: FC<Props> = ({ ticker }) => {
+const StocksChart: FC<Props> = ({ ticker, chartType }) => {
+  //get access to ticker and the chart type from the context
+
   const StockChartRef = useRef();
   const test = StockChartRef.current;
 
   const [chartData, setChartData] = useState<Array<any>>();
-  const startDate = "2006-01-0";
+  const startDate = "2006-01-01";
   const endDate = "2006-01-30";
   const [isLoading, setIsLoading] = useState(false);
-  const chartPush = (chartData: any) => {
+  const candlestickChartPush = (chartData: any) => {
+    dataPoints1 = [];
     if (chartData) {
       for (let i = 0; i < chartData.length; i++) {
         dataPoints1.push({
@@ -31,12 +40,27 @@ const StocksChart: FC<Props> = ({ ticker }) => {
           ],
         });
       }
+      console.log(dataPoints1);
     }
   };
-  console.log(chartData);
+
+  const lineChartPush = (chartData: any) => {
+    dataPoints1 = [];
+    if (chartData) {
+      for (let i = 0; i < chartData.length; i++) {
+        dataPoints1.push({
+          x: new Date(chartData![i].datetime),
+          y: Number(chartData![i].close),
+        });
+      }
+      console.log(dataPoints1);
+    }
+  };
+
   useEffect(() => {
     console.log(isLoading);
   }, [isLoading]);
+
   const handleStockChartInfo = useCallback(async () => {
     setIsLoading(true);
 
@@ -44,35 +68,71 @@ const StocksChart: FC<Props> = ({ ticker }) => {
     if (!chartData) {
       setChartData(response.values);
     }
-    chartPush(chartData);
+    console.log(chartType);
+    if (chartType === ChartTypes.candleStick) {
+      candlestickChartPush(chartData);
+      console.log("candle");
+    } else {
+      lineChartPush(chartData);
+      console.log("`lineeeeee");
+    }
+
     setIsLoading(false);
-  }, [ticker, chartData]);
+  }, [ticker, chartData, chartType]);
 
   useEffect(() => {
     handleStockChartInfo();
+    //makes the call everytime the ticker changes, need that to happen for chart type
   }, [ticker, handleStockChartInfo]);
-  const options = {
-    charts: [
-      {
-        title: {
-          text: `${ticker}`,
-        },
-        data: [
+
+  const handleChartOptions = useCallback(() => {
+    if (chartType === ChartTypes.candleStick) {
+      return {
+        charts: [
           {
-            type: "candlestick",
-            dataPoints: dataPoints1,
+            title: {
+              text: `${ticker}`,
+            },
+            data: [
+              {
+                type: chartType.toLowerCase(),
+                dataPoints: dataPoints1,
+              },
+            ],
           },
         ],
-      },
-    ],
 
-    navigator: {
-      slider: {
-        minimum: new Date(startDate),
-        maximum: new Date(endDate),
-      },
-    },
-  };
+        navigator: {
+          slider: {
+            minimum: new Date(startDate),
+            maximum: new Date(endDate),
+          },
+        },
+      };
+    } else {
+      return {
+        charts: [
+          {
+            title: {
+              text: `${ticker}`,
+            },
+            data: [
+              {
+                type: chartType.toLowerCase(),
+                dataPoints: dataPoints1,
+              },
+            ],
+          },
+        ],
+        navigator: {
+          slider: {
+            minimum: new Date(startDate),
+            maximum: new Date(endDate),
+          },
+        },
+      };
+    }
+  }, [chartType, ticker]);
 
   return (
     <div className="mt-6 w-11/12 mx-auto ">
@@ -81,7 +141,7 @@ const StocksChart: FC<Props> = ({ ticker }) => {
           <Loader type="TailSpin" color="#fff" height={70} width={50} />
         </div>
       ) : (
-        <CanvasJsStockChart options={options} onRef={test} />
+        <CanvasJsStockChart options={handleChartOptions()} onRef={test} />
       )}
     </div>
   );

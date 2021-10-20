@@ -9,14 +9,9 @@ import { List, AutoSizer } from "react-virtualized";
 import "react-virtualized/styles.css";
 import { Tab } from "../../components/Tab";
 import { useTabs } from "../../components/hooks/useTabs";
-import { TabTypes } from "../../definitions";
+import { ChartTypes, TabTypes } from "../../definitions";
 //import {MeasuredCellParent} from 'react-virtualized/dist/es/CellMeasurer'
 //create enum for chattypes
-enum ChartTypes {
-  candleStick = "CandleStick",
-  area = "Area",
-  line = "Line",
-}
 
 const Stocks: FC = () => {
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
@@ -56,7 +51,7 @@ const Stocks: FC = () => {
                 <option value="Line">Line</option>
               </select>
             </div>
-            <div className=" text-gray-600 mb-2 flex">
+            <div className=" text-gray-700 mb-2 flex">
               <div>
                 <p className="text-white pb-2 text-sm">Start Date</p>
                 <input
@@ -64,7 +59,7 @@ const Stocks: FC = () => {
                   placeholder="YYYY-MM-DD"
                   name=""
                   id=""
-                  className="rounded outline-none text-sm py-1 pl-2"
+                  className="rounded outline-none text-sm py-1 w-28 pl-2 bg-gray-100"
                 />
               </div>
 
@@ -75,7 +70,7 @@ const Stocks: FC = () => {
                   placeholder="YYYY-MM-DD"
                   name=""
                   id=""
-                  className="rounded outline-none text-sm py-1 pl-2"
+                  className="rounded outline-none text-sm py-1 w-28 pl-2 bg-gray-100"
                 />
               </div>
             </div>
@@ -123,7 +118,9 @@ const Stocks: FC = () => {
                   ) : null}
                 </ul>
               ) : null}
-              {selectedStock ? <StocksChart ticker={selectedStock} /> : null}
+              {selectedStock ? (
+                <StocksChart chartType={chartType} ticker={selectedStock} />
+              ) : null}
             </section>
           </>
         );
