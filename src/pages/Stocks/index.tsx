@@ -19,25 +19,30 @@ enum ChartTypes {
 }
 
 const Stocks: FC = () => {
+  const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const [showResults, setShowResults] = useState(true);
+  //const [day, setDay] = useState();
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
   );
+
+  /*   const handleDayChange = (day: any) => {
+    setDay(day);
+  }; */
   useEffect(() => {
     console.log(chartType);
   }, [chartType]);
-  const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
-  console.log(showResults);
 
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
   };
+
   const renderTabDetails = (currentTab: TabTypes) => {
     switch (currentTab) {
       case TabTypes.performance:
         return (
           <>
-            <div className="w-40 mb-32 ">
+            <div className="w-40 mb-4 ">
               <select
                 name=""
                 id=""
@@ -51,6 +56,30 @@ const Stocks: FC = () => {
                 <option value="Line">Line</option>
               </select>
             </div>
+            <div className=" text-gray-600 mb-2 flex">
+              <div>
+                <p className="text-white pb-2 text-sm">Start Date</p>
+                <input
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                  name=""
+                  id=""
+                  className="rounded outline-none text-sm py-1 pl-2"
+                />
+              </div>
+
+              <div className="ml-6">
+                <p className="text-white  pb-2 text-sm">End Date</p>
+                <input
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                  name=""
+                  id=""
+                  className="rounded outline-none text-sm py-1 pl-2"
+                />
+              </div>
+            </div>
+
             <section className="border-t">
               <p className="text-center text-xl pt-6 md:pt-12 ">
                 Stocks Search
