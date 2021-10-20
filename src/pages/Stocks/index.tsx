@@ -1,6 +1,5 @@
 //import { useState } from "react"
-import { FC, useState } from "react";
-import Select from "react-select";
+import { FC, useEffect, useState } from "react";
 
 import { getStockInfo } from "../../api";
 import Loader from "react-loader-spinner";
@@ -13,26 +12,44 @@ import { useTabs } from "../../components/hooks/useTabs";
 import { TabTypes } from "../../definitions";
 //import {MeasuredCellParent} from 'react-virtualized/dist/es/CellMeasurer'
 //create enum for chattypes
+enum ChartTypes {
+  candleStick = "CandleStick",
+  area = "Area",
+  line = "Line",
+}
+
 const Stocks: FC = () => {
   const [showResults, setShowResults] = useState(true);
+  const [chartType, setChartType] = useState<ChartTypes>(
+    ChartTypes.candleStick
+  );
+  useEffect(() => {
+    console.log(chartType);
+  }, [chartType]);
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   console.log(showResults);
+
+  const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setChartType(e.target.value as ChartTypes);
+  };
   const renderTabDetails = (currentTab: TabTypes) => {
     switch (currentTab) {
       case TabTypes.performance:
         return (
           <>
-            <div className="w-40 pb-3">
-              <Select
+            <div className="w-40 mb-32 ">
+              <select
+                name=""
+                id=""
+                value={chartType}
+                onChange={handleChanges}
                 placeholder="Chart Type"
-                className=" text-gray-600"
-                options={[
-                  { value: "CandleStick", label: "CandleStick" },
-                  { value: "Line", label: "Line" },
-                  { value: "Area", label: "Area" },
-                ]}
-                isSearchable={false}
-              />
+                className="text-gray-600 py-1 px-1 rounded bg-gray-50"
+              >
+                <option value="CandleStick">CandleStick</option>
+                <option value="Area">Area</option>
+                <option value="Line">Line</option>
+              </select>
             </div>
             <section className="border-t">
               <p className="text-center text-xl pt-6 md:pt-12 ">
@@ -56,9 +73,9 @@ const Stocks: FC = () => {
                 ) : null}
               </div>
               {searchQuery && showResults ? (
-                <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative z-20 border">
+                <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative border">
                   {stockData?.data ? (
-                    <div className="w-full h-64  bg-white z-30">
+                    <div className="w-full h-64  bg-white ">
                       <AutoSizer>
                         {({ width, height }) => {
                           return (
@@ -127,7 +144,7 @@ const Stocks: FC = () => {
         key={key}
         style={style}
         onClick={() => handleStockSelect(stockData?.data[index]?.symbol)}
-        className="pl-2.5 py text-xs md:text-lg text-black p hover:bg-blue-600  hover:text-gray-200    absolute  t0p-0 z-50 border-b  flex"
+        className="pl-2.5 py text-xs md:text-lg text-black p hover:bg-blue-600  hover:text-gray-200   border-b  flex"
       >
         {stockData?.data[index]?.symbol}
       </li>
@@ -135,7 +152,7 @@ const Stocks: FC = () => {
   };
 
   return (
-    <div className="flex-grow  relative  ">
+    <div className="flex-grow  ">
       <nav className="flex mb-8 py-3 md:py-4 flex-wrap justify-center w-full mx-auto border  px-1 md:px-2 ">
         <Tab
           onClick={() => onTabClick(TabTypes.performance)}
