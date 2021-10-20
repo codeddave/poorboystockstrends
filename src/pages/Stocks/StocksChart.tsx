@@ -47,6 +47,7 @@ const StocksChart: FC<Props> = ({ ticker }) => {
     chartPush(chartData);
     setIsLoading(false);
   }, [ticker, chartData]);
+
   useEffect(() => {
     handleStockChartInfo();
   }, [ticker, handleStockChartInfo]);
@@ -74,7 +75,7 @@ const StocksChart: FC<Props> = ({ ticker }) => {
   };
 
   return (
-    <div className="mt-6 w-11/12 mx-auto z-10">
+    <div className="mt-6 w-11/12 mx-auto ">
       {isLoading || !chartData ? (
         <div className="flex justify-center mt-6">
           <Loader type="TailSpin" color="#fff" height={70} width={50} />
