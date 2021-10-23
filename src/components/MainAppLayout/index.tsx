@@ -4,14 +4,22 @@ import { FC } from "react";
 //max-h-screen overflow-y-scroll
 const MainLayOut: FC = ({ children }) => {
   return (
-    <section className="grid md:grid-cols-4 flex-grow t-10 md:pt-32">
-      <div className=" hidden md:flex flex-col items-center px-2  text-center  ">
-        <p className="text-3xl">Ads go here</p>
+    <section className="grid md:grid-cols-5 flex-grow t-10 md:pt-32">
+      <div className=" hidden md:flex flex-col items-center px-2  text-center pt-32  ">
+        <ul className="border w-full">
+          <li className="border-b py-2 text-left pl-3">Country</li>
+          <li className="border-b py-2 text-left pl-3">Exhange</li>
+          <li className="border-b py-2 text-left pl-3">Sector</li>
+          <li className="border-b py-2 text-left pl-3">Industry</li>
+          <li className="border-b py-2 text-left pl-3">Stock</li>
+          <li className="border-b py-2 text-left pl-3">Interval</li>
+        </ul>
+        {/*   <p className="text-3xl">Ads go here</p> */}
       </div>
 
-      <div className="px-4 md:px-0 pt-24 md:pt-0 md:col-span-2">{children}</div>
+      <div className="px-6  pt-24 md:pt-0 md:col-span-3">{children}</div>
 
-      <div className="hidden md:flex flex-col items-center px-4">
+      <div className="hidden md:flex flex-col items-center px-4 pt-32 ">
         <p className="text-3xl">Ads go here</p>
       </div>
     </section>

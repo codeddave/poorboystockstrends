@@ -5,6 +5,7 @@ import CustomFormInput from "../../components/Form/CustomFormInput";
 import { HiOutlineUser } from "react-icons/hi";
 import { VscLock } from "react-icons/vsc";
 import { LoginSchema } from "../../definitions/Yup";
+import { logIn } from "../../api/auth";
 
 const initialValues = {
   username: "",
@@ -18,9 +19,11 @@ const Login = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={LoginSchema}
-        onSubmit={() => console.log("bhdvhjveEJEVVVJBe")}
+        onSubmit={async (values) => {
+          await logIn(values);
+        }}
       >
-        {() => (
+        {({ isSubmitting }) => (
           <Form>
             <Field
               component={CustomFormInput}
@@ -36,7 +39,11 @@ const Login = () => {
               icon={VscLock}
             />
             <div className="flex justify-center mt-8">
-              <button className="border-white border py-2 px-4 rounded text-white mx-auto w-40  hover:bg-blue-50 hover:text-gray-600 ">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="border-white border py-2 px-4 rounded text-white mx-auto w-40  hover:bg-blue-50 hover:text-gray-600 "
+              >
                 Login
               </button>
             </div>

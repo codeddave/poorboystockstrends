@@ -18,7 +18,7 @@ export const Navbar = () => {
     <>
       <ClickAwayListener onClickAway={handleNavClose}>
         <nav className=" md:pt-8 w-full  mx-auto fixed z-30">
-          <div className="right-0 absolute sm:hidden pr-3 top-6 z-50">
+          <div className="right-0 absolute sm:hidden pr-3 top-6 z-50 ">
             <HamburgerMenu
               isOpen={isNavOpen}
               color={isNavOpen ? "#000" : "#fff"}
@@ -28,7 +28,7 @@ export const Navbar = () => {
             />
           </div>
           {isNavOpen ? (
-            <ul className="flex flex-col items-center justify-center bg-gray-200 py-8 w-full md:hidden text-gray-700 shadow opacity-90 font-semibold">
+            <ul className="flex flex-col items-center justify-center bg-gray-200 py-8 w-full md:hidden text-gray-700 shadow opacity-90 font-semibold leading-relaxed">
               <li onClick={handleNavClose} className="pb-1.5 cursor-pointer">
                 <NavLink to="/stocks">Stocks</NavLink>
               </li>
@@ -56,7 +56,7 @@ export const Navbar = () => {
             <div className="place-self-center">
               <NavLink
                 to="/"
-                className="ml-2 font-bold text-lg lg:text-xl cursor-pointer text-center"
+                className="ml-2 md:ml-0 font-bold text-lg lg:text-xl cursor-pointer text-center"
               >
                 POORBOY STOCKS TRENDS
               </NavLink>

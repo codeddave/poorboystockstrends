@@ -124,12 +124,7 @@ const StocksChart: FC<Props> = ({ ticker, chartType }) => {
             ],
           },
         ],
-        navigator: {
-          slider: {
-            minimum: new Date(startDate),
-            maximum: new Date(endDate),
-          },
-        },
+       
       };
     }
   }, [chartType, ticker]);
