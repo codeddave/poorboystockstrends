@@ -28,10 +28,9 @@ export const getStockChartInfo = async (
   startDate: string,
   endDate: string
 ) => {
-  console.log(process.env.TWELVEDATATOKEN);
   try {
     const res = await axios.get(
-      `${twelveDataUrl}/time_series?symbol=${symbol}&interval=1day&previous_close=True&start_date=${startDate}2&end_date=${endDate}&apikey=${process.env.REACT_APP_TWELVEDATATOKEN}`
+      `${twelveDataUrl}/time_series?symbol=${symbol}&interval=1day&previous_close=True&start_date=${startDate}&end_date=${endDate}&apikey=${process.env.REACT_APP_TWELVEDATATOKEN}`
     );
     return res.data;
   } catch (error) {
