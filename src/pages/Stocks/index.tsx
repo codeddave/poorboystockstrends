@@ -1,6 +1,5 @@
 //import { useState } from "react"
 import { FC, useEffect, useState } from "react";
-
 import { getStockInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
@@ -10,12 +9,18 @@ import "react-virtualized/styles.css";
 import { Tab } from "../../components/Tab";
 import { useTabs } from "../../components/hooks/useTabs";
 import { ChartTypes, TabTypes } from "../../definitions";
-//import {MeasuredCellParent} from 'react-virtualized/dist/es/CellMeasurer'
-//create enum for chattypes
 
+/* type chartDate = {
+  startDate: string
+  endDate: string
+} */
 const Stocks: FC = () => {
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const [showResults, setShowResults] = useState(true);
+
+  const [startDate] = useState("2006-01-01");
+  const [endDate] = useState("2006-01-30");
+
   //const [day, setDay] = useState();
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
@@ -119,7 +124,12 @@ const Stocks: FC = () => {
                 </ul>
               ) : null}
               {selectedStock ? (
-                <StocksChart chartType={chartType} ticker={selectedStock} />
+                <StocksChart
+                  chartType={chartType}
+                  ticker={selectedStock}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
               ) : null}
             </section>
           </>
@@ -146,6 +156,7 @@ const Stocks: FC = () => {
   } = useSearch(getStockInfo, setShowResults);
 
   console.log(selectedStock);
+  console.log(stockData);
 
   const handleStockSelect = (symbol: string) => {
     handleSelectedStock(symbol);
@@ -172,7 +183,7 @@ const Stocks: FC = () => {
         onClick={() => handleStockSelect(stockData?.data[index]?.symbol)}
         className="pl-2.5 py text-xs md:text-lg text-black p hover:bg-blue-600  hover:text-gray-200   border-b  flex"
       >
-        {stockData?.data[index]?.symbol}
+        {stockData?.data[index]?.name}
       </li>
     );
   };
