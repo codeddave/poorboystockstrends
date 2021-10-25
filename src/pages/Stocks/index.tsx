@@ -79,7 +79,7 @@ const Stocks: FC = () => {
                 <p className="text-white pb-2 text-sm">Start Date</p>
                 <DayPickerInput
                   onDayChange={handleStartDateChange}
-                  inputProps={{ style: { width: 100, paddingLeft: 5 } }}
+                  inputProps={{ style: { width: 110, paddingLeft: 5 } }}
                 />
               </div>
 
@@ -87,7 +87,7 @@ const Stocks: FC = () => {
                 <p className="text-white  pb-2 text-sm">End Date</p>
                 <DayPickerInput
                   onDayChange={handleEndDateChange}
-                  inputProps={{ style: { width: 100, paddingLeft: 5 } }}
+                  inputProps={{ style: { width: 110, paddingLeft: 5 } }}
                 />
               </div>
             </div>
