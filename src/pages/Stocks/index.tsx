@@ -77,14 +77,17 @@ const Stocks: FC = () => {
             <div className=" text-gray-700 mb-2 flex">
               <div>
                 <p className="text-white pb-2 text-sm">Start Date</p>
-                <DayPickerInput onDayChange={handleStartDateChange} />
+                <DayPickerInput
+                  onDayChange={handleStartDateChange}
+                  inputProps={{ style: { width: 100, paddingLeft: 5 } }}
+                />
               </div>
 
-              <div className="ml-6">
+              <div className="ml-6  ">
                 <p className="text-white  pb-2 text-sm">End Date</p>
                 <DayPickerInput
                   onDayChange={handleEndDateChange}
-                  style={{ width: "10px" }}
+                  inputProps={{ style: { width: 100, paddingLeft: 5 } }}
                 />
               </div>
             </div>
