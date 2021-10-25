@@ -74,7 +74,7 @@ const Stocks: FC = () => {
                 <option value="Line">Line</option>
               </select>
             </div>
-            <div className=" text-gray-700 mb-2 flex">
+            <div className=" text-gray-700 mb-2 flex flex-col sm:flex-row">
               <div>
                 <p className="text-white pb-2 text-sm">Start Date</p>
                 <DayPickerInput
@@ -83,7 +83,7 @@ const Stocks: FC = () => {
                 />
               </div>
 
-              <div className="ml-6  ">
+              <div className="sm:ml-6  mt-3 sm:mt-0">
                 <p className="text-white  pb-2 text-sm">End Date</p>
                 <DayPickerInput
                   onDayChange={handleEndDateChange}
