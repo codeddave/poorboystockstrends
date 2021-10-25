@@ -10,6 +10,9 @@ import { Tab } from "../../components/Tab";
 import { useTabs } from "../../components/hooks/useTabs";
 import { ChartTypes, TabTypes } from "../../definitions";
 
+import DayPickerInput from "react-day-picker/DayPickerInput";
+import "react-day-picker/lib/style.css";
+
 /* type chartDate = {
   startDate: string
   endDate: string
@@ -18,8 +21,8 @@ const Stocks: FC = () => {
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const [showResults, setShowResults] = useState(true);
 
-  const [startDate] = useState("2006-01-01");
-  const [endDate] = useState("2006-01-30");
+  const [startDate, setStartDate] = useState("2006-01-01");
+  const [endDate, setEndDate] = useState("2006-01-30");
 
   //const [day, setDay] = useState();
   const [chartType, setChartType] = useState<ChartTypes>(
@@ -33,8 +36,23 @@ const Stocks: FC = () => {
     console.log(chartType);
   }, [chartType]);
 
+  useEffect(() => {
+    console.log(startDate, "start");
+    console.log(endDate);
+  }, [startDate, endDate]);
+
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
+  };
+  const handleStartDateChange = (day: any) => {
+    setStartDate(new Date(day).toISOString().split("T")[0]);
+    console.log(day);
+
+    console.log(new Date(day));
+  };
+
+  const handleEndDateChange = (day: any) => {
+    setEndDate(new Date(day).toISOString().split("T")[0]);
   };
 
   const renderTabDetails = (currentTab: TabTypes) => {
@@ -59,23 +77,14 @@ const Stocks: FC = () => {
             <div className=" text-gray-700 mb-2 flex">
               <div>
                 <p className="text-white pb-2 text-sm">Start Date</p>
-                <input
-                  type="text"
-                  placeholder="YYYY-MM-DD"
-                  name=""
-                  id=""
-                  className="rounded outline-none text-sm py-1 w-28 pl-2 bg-gray-100"
-                />
+                <DayPickerInput onDayChange={handleStartDateChange} />
               </div>
 
               <div className="ml-6">
                 <p className="text-white  pb-2 text-sm">End Date</p>
-                <input
-                  type="text"
-                  placeholder="YYYY-MM-DD"
-                  name=""
-                  id=""
-                  className="rounded outline-none text-sm py-1 w-28 pl-2 bg-gray-100"
+                <DayPickerInput
+                  onDayChange={handleEndDateChange}
+                  style={{ width: "10px" }}
                 />
               </div>
             </div>
@@ -189,7 +198,7 @@ const Stocks: FC = () => {
   };
 
   return (
-    <div className="flex-grow  ">
+    <div className="flex-grow ">
       <nav className="flex mb-8 py-3 md:py-4 flex-wrap justify-center w-full mx-auto border  px-1 md:px-2 ">
         <Tab
           onClick={() => onTabClick(TabTypes.performance)}

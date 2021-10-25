@@ -85,7 +85,7 @@ const StocksChart: FC<Props> = ({ ticker, chartType, startDate, endDate }) => {
   useEffect(() => {
     handleStockChartInfo();
     //makes the call everytime the ticker changes, need that to happen for chart type
-  }, [ticker, handleStockChartInfo]);
+  }, [ticker, handleStockChartInfo, startDate, endDate]);
 
   const handleChartOptions = useCallback(() => {
     if (chartType === ChartTypes.candleStick) {
