@@ -12,19 +12,21 @@ enum ChartTypes {
 type Props = {
   ticker: string;
   chartType: ChartTypes;
+  startDate: string;
+  endDate: string;
 };
 
 let dataPoints1: any = [];
 
-const StocksChart: FC<Props> = ({ ticker, chartType }) => {
+const StocksChart: FC<Props> = ({ ticker, chartType, startDate, endDate }) => {
   //get access to ticker and the chart type from the context
 
   const StockChartRef = useRef();
   const test = StockChartRef.current;
 
   const [chartData, setChartData] = useState<Array<any>>();
-  const startDate = "2006-01-01";
-  const endDate = "2006-01-30";
+  /*  const startDate = "2006-01-01";
+  const endDate = "2006-01-30"; */
   const [isLoading, setIsLoading] = useState(false);
   const candlestickChartPush = (chartData: any) => {
     dataPoints1 = [];
@@ -78,7 +80,7 @@ const StocksChart: FC<Props> = ({ ticker, chartType }) => {
     }
 
     setIsLoading(false);
-  }, [ticker, chartData, chartType]);
+  }, [ticker, chartData, chartType, startDate, endDate]);
 
   useEffect(() => {
     handleStockChartInfo();
@@ -124,10 +126,15 @@ const StocksChart: FC<Props> = ({ ticker, chartType }) => {
             ],
           },
         ],
-       
+        navigator: {
+          slider: {
+            minimum: new Date(startDate),
+            maximum: new Date(endDate),
+          },
+        },
       };
     }
-  }, [chartType, ticker]);
+  }, [chartType, ticker, startDate, endDate]);
 
   return (
     <div className="mt-6 w-11/12 mx-auto ">
