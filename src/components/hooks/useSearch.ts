@@ -12,6 +12,7 @@ export const useSearch = (
   handleSelectedItem: (item: string) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fetchedData: null | { data: any[] };
+  setSearchQuery: any;
 } => {
   const [searchQuery, setSearchQuery] = useState("");
   const [fetchedData, setFetchedData] = useState<null | { data: any[] }>(null);
@@ -25,7 +26,6 @@ export const useSearch = (
         setIsLoading(true);
 
         const response = await apiFn(value);
-        console.log(searchQuery);
         setIsLoading(false);
 
         setFetchedData(response);
@@ -51,5 +51,6 @@ export const useSearch = (
     handleSelectedItem,
     handleChange,
     fetchedData,
+    setSearchQuery,
   };
 };
