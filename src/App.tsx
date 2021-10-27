@@ -11,13 +11,17 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Stocks from "./pages/Stocks";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 //import "./App.css";
 
 const App: FC = () => {
   return (
     <Router>
-      <div className="bg-blue  text-white bg-blue-900 flex flex-col h-full overflow-hidden min-h-screen relative">
+      <ToastContainer />
+      <div className="bg-blue  text-white bg-blue-900 flex flex-col h-full overflow-hidden min-h-screen relative ">
         <Navbar />
         <MainLayOut>
           <Switch>

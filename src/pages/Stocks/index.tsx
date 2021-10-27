@@ -11,15 +11,15 @@ import { useTabs } from "../../components/hooks/useTabs";
 import { ChartTypes, TabTypes } from "../../definitions";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
-
+import { toast } from "react-toastify";
 const Stocks: FC = () => {
   const [isChartLoading, setIsChartLoading] = useState(false);
 
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const [showResults, setShowResults] = useState(true);
 
-  const [startDate, setStartDate] = useState("2006-01-01");
-  const [endDate, setEndDate] = useState("2006-01-30");
+  const [startDate, setStartDate] = useState("2021-01-01");
+  const [endDate, setEndDate] = useState("2021-01-30");
   const [chartData, setChartData] = useState<Array<any>>();
   const [tick, setTick] = useState("");
 
@@ -42,6 +42,7 @@ const Stocks: FC = () => {
   };
 
   const handlePlotData = async (e: any) => {
+    setChartData([]);
     setTick("");
 
     e.preventDefault();
@@ -49,6 +50,9 @@ const Stocks: FC = () => {
 
     setIsChartLoading(true);
     const response = await getStockChartInfo(ticker, startDate, endDate);
+    if (response.status === "error") {
+      toast.error(response.message);
+    }
     setChartData(response.values);
     console.log(chartType);
 
@@ -145,10 +149,10 @@ const Stocks: FC = () => {
                   ) : null}
                 </ul>
               ) : null}
-              {(selectedStock || searchQuery) && chartData ? (
+              {(selectedStock || searchQuery) && chartData?.length ? (
                 <StocksChart
                   chartType={chartType}
-                  ticker={selectedStock || tick}
+                  ticker={tick || selectedStock}
                   startDate={startDate}
                   endDate={endDate}
                   chartData={chartData}
@@ -176,6 +180,7 @@ const Stocks: FC = () => {
     selectedItem: selectedStock,
     searchQuery,
     handleChange,
+    setSearchQuery,
     handleSelectedItem: handleSelectedStock,
   } = useSearch(getStockInfo, setShowResults);
 
@@ -185,6 +190,7 @@ const Stocks: FC = () => {
   const handleStockSelect = (symbol: string) => {
     handleSelectedStock(symbol);
     setShowResults(false);
+    setSearchQuery(symbol);
   };
   const rowRenderer = ({
     key,
