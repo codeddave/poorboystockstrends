@@ -1,6 +1,5 @@
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import Loader from "react-loader-spinner";
-import { getStockChartInfo } from "../../api";
 import CanvasJSReact from "../../canvasjs.stock.react";
 
 const CanvasJsStockChart = CanvasJSReact.CanvasJSStockChart;
@@ -14,20 +13,24 @@ type Props = {
   chartType: ChartTypes;
   startDate: string;
   endDate: string;
+  chartData: any;
+  isLoading: boolean;
 };
 
 let dataPoints1: any = [];
 
-const StocksChart: FC<Props> = ({ ticker, chartType, startDate, endDate }) => {
-  //get access to ticker and the chart type from the context
-
+const StocksChart: FC<Props> = ({
+  ticker,
+  chartType,
+  startDate,
+  endDate,
+  chartData,
+  isLoading,
+}) => {
+  //get access to ticker and the chart type from the context would implement this later
   const StockChartRef = useRef();
   const test = StockChartRef.current;
 
-  const [chartData, setChartData] = useState<Array<any>>();
-  /*  const startDate = "2006-01-01";
-  const endDate = "2006-01-30"; */
-  const [isLoading, setIsLoading] = useState(false);
   const candlestickChartPush = (chartData: any) => {
     dataPoints1 = [];
     if (chartData) {
@@ -45,7 +48,6 @@ const StocksChart: FC<Props> = ({ ticker, chartType, startDate, endDate }) => {
       console.log(dataPoints1);
     }
   };
-
   const lineChartPush = (chartData: any) => {
     dataPoints1 = [];
     if (chartData) {
@@ -55,22 +57,10 @@ const StocksChart: FC<Props> = ({ ticker, chartType, startDate, endDate }) => {
           y: Number(chartData![i].close),
         });
       }
-      console.log(dataPoints1);
     }
   };
 
   useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
-
-  const handleStockChartInfo = useCallback(async () => {
-    setIsLoading(true);
-
-    const response = await getStockChartInfo(ticker, startDate, endDate);
-    if (!chartData) {
-      setChartData(response.values);
-    }
-    console.log(chartType);
     if (chartType === ChartTypes.candleStick) {
       candlestickChartPush(chartData);
       console.log("candle");
@@ -78,14 +68,8 @@ const StocksChart: FC<Props> = ({ ticker, chartType, startDate, endDate }) => {
       lineChartPush(chartData);
       console.log("`lineeeeee");
     }
-
-    setIsLoading(false);
-  }, [ticker, chartData, chartType, startDate, endDate]);
-
-  useEffect(() => {
-    handleStockChartInfo();
     //makes the call everytime the ticker changes, need that to happen for chart type
-  }, [ticker, handleStockChartInfo, startDate, endDate]);
+  }, [chartData, chartType]);
 
   const handleChartOptions = useCallback(() => {
     if (chartType === ChartTypes.candleStick) {
@@ -138,7 +122,7 @@ const StocksChart: FC<Props> = ({ ticker, chartType, startDate, endDate }) => {
 
   return (
     <div className="mt-6 w-11/12 mx-auto ">
-      {isLoading || !chartData ? (
+      {isLoading ? (
         <div className="flex justify-center mt-6">
           <Loader type="TailSpin" color="#fff" height={70} width={50} />
         </div>

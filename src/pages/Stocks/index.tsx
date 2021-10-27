@@ -1,6 +1,6 @@
 //import { useState } from "react"
-import { FC, useEffect, useState } from "react";
-import { getStockInfo } from "../../api";
+import { FC, useState } from "react";
+import { getStockChartInfo, getStockInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
 import StocksChart from "./StocksChart";
@@ -9,38 +9,24 @@ import "react-virtualized/styles.css";
 import { Tab } from "../../components/Tab";
 import { useTabs } from "../../components/hooks/useTabs";
 import { ChartTypes, TabTypes } from "../../definitions";
-
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 
-/* type chartDate = {
-  startDate: string
-  endDate: string
-} */
 const Stocks: FC = () => {
+  const [isChartLoading, setIsChartLoading] = useState(false);
+
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const [showResults, setShowResults] = useState(true);
 
   const [startDate, setStartDate] = useState("2006-01-01");
   const [endDate, setEndDate] = useState("2006-01-30");
+  const [chartData, setChartData] = useState<Array<any>>();
+  const [tick, setTick] = useState("");
 
   //const [day, setDay] = useState();
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
   );
-
-  /*   const handleDayChange = (day: any) => {
-    setDay(day);
-  }; */
-  useEffect(() => {
-    console.log(chartType);
-  }, [chartType]);
-
-  useEffect(() => {
-    console.log(startDate, "start");
-    console.log(endDate);
-  }, [startDate, endDate]);
-
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
   };
@@ -55,45 +41,61 @@ const Stocks: FC = () => {
     setEndDate(new Date(day).toISOString().split("T")[0]);
   };
 
+  const handlePlotData = async (e: any) => {
+    setTick("");
+
+    e.preventDefault();
+    const ticker = searchQuery || selectedStock;
+
+    setIsChartLoading(true);
+    const response = await getStockChartInfo(ticker, startDate, endDate);
+    setChartData(response.values);
+    console.log(chartType);
+
+    setIsChartLoading(false);
+    setShowResults(false);
+    setTick(ticker);
+  };
+
   const renderTabDetails = (currentTab: TabTypes) => {
     switch (currentTab) {
       case TabTypes.performance:
         return (
           <>
-            <div className="w-40 mb-4 ">
-              <select
-                name=""
-                id=""
-                value={chartType}
-                onChange={handleChanges}
-                placeholder="Chart Type"
-                className="text-gray-600 py-1 px-1 rounded bg-gray-50"
-              >
-                <option value="CandleStick">CandleStick</option>
-                <option value="Area">Area</option>
-                <option value="Line">Line</option>
-              </select>
-            </div>
-            <div className=" text-gray-700 mb-2 flex flex-col sm:flex-row">
-              <div>
-                <p className="text-white pb-2 text-sm">Start Date</p>
-                <DayPickerInput
-                  onDayChange={handleStartDateChange}
-                  inputProps={{ style: { width: 110, paddingLeft: 5 } }}
-                />
+            <form onSubmit={handlePlotData}>
+              <div className="w-40 mb-4 ">
+                <select
+                  name=""
+                  id=""
+                  value={chartType}
+                  onChange={handleChanges}
+                  placeholder="Chart Type"
+                  className="text-gray-600 py-1 px-1 rounded bg-gray-50"
+                >
+                  <option value="CandleStick">CandleStick</option>
+                  <option value="Area">Area</option>
+                  <option value="Line">Line</option>
+                </select>
+              </div>
+              <div className=" text-gray-700 mb-2 flex flex-col sm:flex-row">
+                <div>
+                  <p className="text-white pb-2 text-sm">Start Date</p>
+                  <DayPickerInput
+                    onDayChange={handleStartDateChange}
+                    inputProps={{ style: { width: 110, paddingLeft: 5 } }}
+                  />
+                </div>
+
+                <div className="sm:ml-6  mt-3 sm:mt-0">
+                  <p className="text-white  pb-2 text-sm">End Date</p>
+                  <DayPickerInput
+                    onDayChange={handleEndDateChange}
+                    inputProps={{ style: { width: 110, paddingLeft: 5 } }}
+                  />
+                </div>
               </div>
 
-              <div className="sm:ml-6  mt-3 sm:mt-0">
-                <p className="text-white  pb-2 text-sm">End Date</p>
-                <DayPickerInput
-                  onDayChange={handleEndDateChange}
-                  inputProps={{ style: { width: 110, paddingLeft: 5 } }}
-                />
-              </div>
-            </div>
-
-            <section className="border-t">
-              <p className="text-center text-xl pt-6 md:pt-12 ">
+              <p className="text-center text-xl pt-6 md:pt-12 border-t ">
                 Stocks Search
               </p>
               <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
@@ -113,7 +115,15 @@ const Stocks: FC = () => {
                   />
                 ) : null}
               </div>
-              {searchQuery && showResults ? (
+              <div className="flex justify-center mt-8">
+                <button
+                  type="submit"
+                  className="border-white border py-2  rounded text-white mx-auto w-24  hover:bg-blue-50 hover:text-gray-600 "
+                >
+                  Plot
+                </button>
+              </div>
+              {searchQuery && showResults && stockData?.data ? (
                 <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative border">
                   {stockData?.data ? (
                     <div className="w-full h-64  bg-white ">
@@ -135,15 +145,17 @@ const Stocks: FC = () => {
                   ) : null}
                 </ul>
               ) : null}
-              {selectedStock ? (
+              {(selectedStock || searchQuery) && chartData ? (
                 <StocksChart
                   chartType={chartType}
-                  ticker={selectedStock}
+                  ticker={selectedStock || tick}
                   startDate={startDate}
                   endDate={endDate}
+                  chartData={chartData}
+                  isLoading={isChartLoading}
                 />
               ) : null}
-            </section>
+            </form>
           </>
         );
       case TabTypes.dailyMatchTrend:
@@ -177,16 +189,12 @@ const Stocks: FC = () => {
   const rowRenderer = ({
     key,
     index,
-    // isScrolling,
-    //isVisible, // This row is visible within the List (eg it is not an overscanned row)
-    style, // Style object to be applied to row (to position it)
+    style,
   }: {
     index: number;
-    //isVisible: boolean
-    //parent: MeasuredCellParent
+
     key: any;
     style: React.CSSProperties;
-    // isScrolling: boolean
   }) => {
     return (
       <li
