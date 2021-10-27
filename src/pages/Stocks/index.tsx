@@ -29,6 +29,7 @@ const Stocks: FC = () => {
   );
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
+    handlePlotData();
   };
   const handleStartDateChange = (day: any) => {
     setStartDate(new Date(day).toISOString().split("T")[0]);
@@ -41,11 +42,11 @@ const Stocks: FC = () => {
     setEndDate(new Date(day).toISOString().split("T")[0]);
   };
 
-  const handlePlotData = async (e: any) => {
+  const handlePlotData = async (e?: any) => {
     setChartData([]);
     setTick("");
 
-    e.preventDefault();
+    if (e) e.preventDefault();
     const ticker = searchQuery || selectedStock;
 
     setIsChartLoading(true);
@@ -60,6 +61,7 @@ const Stocks: FC = () => {
     setShowResults(false);
     setTick(ticker);
   };
+  console.log(chartType);
 
   const renderTabDetails = (currentTab: TabTypes) => {
     switch (currentTab) {
