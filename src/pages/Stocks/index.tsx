@@ -1,5 +1,5 @@
 //import { useState } from "react"
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { getStockChartInfo, getStockInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
@@ -12,9 +12,11 @@ import { ChartTypes, TabTypes } from "../../definitions";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 import { toast } from "react-toastify";
+import Select from "react-select";
+import { countries } from "../../utils";
+
 const Stocks: FC = () => {
   const [isChartLoading, setIsChartLoading] = useState(false);
-
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const [showResults, setShowResults] = useState(true);
 
@@ -23,19 +25,23 @@ const Stocks: FC = () => {
   const [chartData, setChartData] = useState<Array<any>>();
   const [tick, setTick] = useState("");
 
-  //const [day, setDay] = useState();
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
   );
+
+  const actual = countries.map((country) => {
+    return {
+      value: country,
+      label: country,
+    };
+  });
+
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
     handlePlotData();
   };
   const handleStartDateChange = (day: any) => {
     setStartDate(new Date(day).toISOString().split("T")[0]);
-    console.log(day);
-
-    console.log(new Date(day));
   };
 
   const handleEndDateChange = (day: any) => {
@@ -45,7 +51,6 @@ const Stocks: FC = () => {
   const handlePlotData = async (e?: any) => {
     setChartData([]);
     setTick("");
-
     if (e) e.preventDefault();
     const ticker = searchQuery || selectedStock;
 
@@ -55,14 +60,27 @@ const Stocks: FC = () => {
       toast.error(response.message);
     }
     setChartData(response.values);
-    console.log(chartType);
-
     setIsChartLoading(false);
     setShowResults(false);
     setTick(ticker);
   };
-  console.log(chartType);
 
+  const handleExchangeChange = (e: any) => {
+    console.log(e);
+  };
+  const {
+    fetchedData: stockData,
+    isLoading,
+    selectedItem: selectedStock,
+    searchQuery,
+    handleChange,
+    setSearchQuery,
+    handleSelectedItem: handleSelectedStock,
+    handleCountryChange,
+    country,
+  } = useSearch(getStockInfo, setShowResults);
+  console.log(country, ";klblj");
+  console.log(countries);
   const renderTabDetails = (currentTab: TabTypes) => {
     switch (currentTab) {
       case TabTypes.performance:
@@ -71,8 +89,8 @@ const Stocks: FC = () => {
             <form onSubmit={handlePlotData}>
               <div className="w-40 mb-4 ">
                 <select
-                  name=""
-                  id=""
+                  name="chartType"
+                  id="chartType"
                   value={chartType}
                   onChange={handleChanges}
                   placeholder="Chart Type"
@@ -83,8 +101,8 @@ const Stocks: FC = () => {
                   <option value="Line">Line</option>
                 </select>
               </div>
-              <div className=" text-gray-700 mb-2 flex flex-col sm:flex-row">
-                <div>
+              <div className=" text-gray-700 mb-2 grid  grid-cols-2 gap-4 md:gap-0 md:grid-cols-4  items-center w-full">
+                <div className="">
                   <p className="text-white pb-2 text-sm">Start Date</p>
                   <DayPickerInput
                     onDayChange={handleStartDateChange}
@@ -97,6 +115,36 @@ const Stocks: FC = () => {
                   <DayPickerInput
                     onDayChange={handleEndDateChange}
                     inputProps={{ style: { width: 110, paddingLeft: 5 } }}
+                  />
+                </div>
+                <div>
+                  <Select
+                    options={actual}
+                    onChange={handleCountryChange}
+                    className="w-32 sm:w-40 mt-6"
+                    placeholder="Country"
+                  />
+                  {/* <select
+                    name="country"
+                    id="country"
+                    value={country}
+                    onChange={handleCountryChange}
+                    placeholder="Country"
+                    className="text-gray-600 py-1 px-1 rounded bg-gray-50"
+                  >
+                    {}
+                    <option value="united states">america</option>
+                    <option value="france">france</option>
+                    <option value="germany">germany</option>
+                  </select> */}
+                </div>
+
+                <div>
+                  <Select
+                    options={[{ label: "", value: "" }]}
+                    onChange={handleExchangeChange}
+                    className="w-32 sm:w-40 mt-6"
+                    placeholder="Exchange"
                   />
                 </div>
               </div>
@@ -121,6 +169,9 @@ const Stocks: FC = () => {
                   />
                 ) : null}
               </div>
+              {showResults && !isLoading && !stockData?.data.length ? (
+                <p className="text-white pt-4 text-center">No results found</p>
+              ) : null}
               <div className="flex justify-center mt-8">
                 <button
                   type="submit"
@@ -129,7 +180,7 @@ const Stocks: FC = () => {
                   Plot
                 </button>
               </div>
-              {searchQuery && showResults && stockData?.data ? (
+              {searchQuery && showResults && stockData?.data.length ? (
                 <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative border">
                   {stockData?.data ? (
                     <div className="w-full h-64  bg-white ">
@@ -176,15 +227,6 @@ const Stocks: FC = () => {
         return <p>Equations</p>;
     }
   };
-  const {
-    fetchedData: stockData,
-    isLoading,
-    selectedItem: selectedStock,
-    searchQuery,
-    handleChange,
-    setSearchQuery,
-    handleSelectedItem: handleSelectedStock,
-  } = useSearch(getStockInfo, setShowResults);
 
   console.log(selectedStock);
   console.log(stockData);

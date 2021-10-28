@@ -12,11 +12,23 @@ const twelveDataUrl = "https://api.twelvedata.com";
     console.log(error);
   }
 }; */
-export const getStockInfo = async (symbol: string): Promise<any> => {
+export const getStockInfo = async (
+  symbol: string,
+  country?: string,
+  exchange?: string
+): Promise<any> => {
   try {
-    const res = await axios.get(
-      `https://pbstbackend.herokuapp.com/v2/search_stock?name=${symbol}`
-    );
+    const handleApi = () => {
+      if (country && exchange) {
+        return `https://pbstbackend.herokuapp.com/v2/search_stock?country=${country}&name=${symbol}&exchange=${exchange}`;
+      } else if (country) {
+        return `https://pbstbackend.herokuapp.com/v2/search_stock?country=${country}&name=${symbol}`;
+      } else {
+        return `https://pbstbackend.herokuapp.com/v2/search_stock?name=${symbol}`;
+      }
+    };
+
+    const res = await axios.get(handleApi());
     return res;
   } catch (error) {
     console.log(error);
