@@ -14,6 +14,7 @@ import Stocks from "./pages/Stocks";
 import { ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import Crypto from "./pages/Crypto";
 
 //import "./App.css";
 
@@ -31,6 +32,7 @@ const App: FC = () => {
 
             <Route exact path="/stocks" component={Stocks} />
             <Route exact path="/forex" component={Forex} />
+            <Route exact path="/crypto" component={Crypto} />
           </Switch>
         </MainLayOut>
         <Footer />

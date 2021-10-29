@@ -50,11 +50,9 @@ export const getStockChartInfo = async (
   }
 };
 
-export const getCryptoInfo = async (cryptoSymbol: string) => {
+export const getExchangeList = async () => {
   try {
-    const res = await axios.get(
-      `${twelveDataUrl}/cryptocurrencies?symbol=${cryptoSymbol}`
-    );
+    const res = await axios.get(`${twelveDataUrl}/exchanges`);
     return res.data;
   } catch (error) {
     console.log(error);

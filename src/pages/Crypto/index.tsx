@@ -1,6 +1,6 @@
 //import { useState } from "react"
 import { FC, useState } from "react";
-import { getForexInfo } from "../../api";
+import { getCryptoInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
 import { useTabs } from "../../components/hooks/useTabs";
@@ -8,20 +8,20 @@ import { TabTypes } from "../../definitions";
 import { List, AutoSizer } from "react-virtualized";
 import { Tab } from "../../components/Tab";
 
-const Forex: FC = () => {
+const Crypto: FC = () => {
   const [showResults, setShowResults] = useState(true);
 
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
 
   const {
-    fetchedData: forexData,
+    fetchedData: cryptoData,
     isLoading,
-    // selectedItem: selectedForexPair,
+    // selectedItem: selectedcryptoPair,
     searchQuery,
     handleChange,
-    handleSelectedItem: handleSelectedForexPair,
-  } = useSearch(getForexInfo, setShowResults);
-  console.log(forexData);
+    handleSelectedItem: handleSelectedCryptoCurrency,
+  } = useSearch(getCryptoInfo, setShowResults);
+  console.log(cryptoData);
   const rowRenderer = ({
     key,
     index,
@@ -40,10 +40,12 @@ const Forex: FC = () => {
       <li
         key={key}
         style={style}
-        onClick={() => handleForexPairSelect(forexData?.data[index]?.symbol)}
+        onClick={() =>
+          handleCryptoCurrencySelect(cryptoData?.data[index]?.symbol)
+        }
         className="px-3 text-xs md:text-lg text-black p hover:bg-blue-600  hover:text-gray-200  border-b   flex"
       >
-        {forexData?.data[index]?.symbol}
+        {cryptoData?.data[index]?.symbol}
       </li>
     );
   };
@@ -53,7 +55,7 @@ const Forex: FC = () => {
       case TabTypes.performance:
         return (
           <>
-            <p className="text-center text-xl pt-6 md:pt-12 ">Forex Search</p>
+            <p className="text-center text-xl pt-6 md:pt-12 ">Crypto Search</p>
             <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
               <input
                 className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
@@ -73,7 +75,7 @@ const Forex: FC = () => {
             </div>
             {searchQuery && showResults ? (
               <ul className="mt-4 w-full lg:w-2/3 mx-auto h-64 bg-white flex flex-col divide-y rounded relative z-20">
-                {forexData?.data ? (
+                {cryptoData?.data ? (
                   <div className="w-full h-64  bg-white z-30">
                     <AutoSizer>
                       {({ width, height }) => {
@@ -81,7 +83,7 @@ const Forex: FC = () => {
                           <List
                             width={width}
                             height={height}
-                            rowCount={forexData!.data.length}
+                            rowCount={cryptoData!.data.length}
                             rowHeight={30}
                             rowRenderer={rowRenderer}
                             className="w-full"
@@ -108,8 +110,8 @@ const Forex: FC = () => {
     }
   };
 
-  const handleForexPairSelect = (symbol: string) => {
-    handleSelectedForexPair(symbol);
+  const handleCryptoCurrencySelect = (symbol: string) => {
+    handleSelectedCryptoCurrency(symbol);
     setShowResults(false);
   };
   return (
@@ -165,4 +167,4 @@ const Forex: FC = () => {
   );
 };
 
-export default Forex;
+export default Crypto;
