@@ -1,6 +1,6 @@
 //import { useState } from "react"
-import React, { FC, useState } from "react";
-import { getStockChartInfo, getStockInfo } from "../../api";
+import React, { FC, useEffect, useState } from "react";
+import { getExchangeList, getStockChartInfo, getStockInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
 import StocksChart from "./StocksChart";
@@ -24,6 +24,7 @@ const Stocks: FC = () => {
   const [endDate, setEndDate] = useState("2021-01-30");
   const [chartData, setChartData] = useState<Array<any>>();
   const [tick, setTick] = useState("");
+  const [exchanges, setExchanges] = useState<any>();
 
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
@@ -35,6 +36,23 @@ const Stocks: FC = () => {
       label: country,
     };
   });
+
+  const fetchExchages = async () => {
+    try {
+      const response = await getExchangeList();
+      setExchanges(
+        response.data.map((exchange: any) => {
+          return {
+            value: exchange.name,
+            label: exchange.name,
+          };
+        })
+      );
+    } catch (error) {}
+  };
+  useEffect(() => {
+    fetchExchages();
+  }, []);
 
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
@@ -124,24 +142,10 @@ const Stocks: FC = () => {
                     className="w-32 sm:w-40 mt-6"
                     placeholder="Country"
                   />
-                  {/* <select
-                    name="country"
-                    id="country"
-                    value={country}
-                    onChange={handleCountryChange}
-                    placeholder="Country"
-                    className="text-gray-600 py-1 px-1 rounded bg-gray-50"
-                  >
-                    {}
-                    <option value="united states">america</option>
-                    <option value="france">france</option>
-                    <option value="germany">germany</option>
-                  </select> */}
                 </div>
-
                 <div>
                   <Select
-                    options={[{ label: "", value: "" }]}
+                    options={exchanges}
                     onChange={handleExchangeChange}
                     className="w-32 sm:w-40 mt-6"
                     placeholder="Exchange"
@@ -181,7 +185,7 @@ const Stocks: FC = () => {
                 </button>
               </div>
               {searchQuery && showResults && stockData?.data.length ? (
-                <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative border">
+                <ul className="mt-2 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative border z-20">
                   {stockData?.data ? (
                     <div className="w-full h-64  bg-white ">
                       <AutoSizer>
