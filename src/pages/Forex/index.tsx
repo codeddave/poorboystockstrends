@@ -21,7 +21,9 @@ const Forex: FC = () => {
   const [endDate, setEndDate] = useState("2021-01-30");
   const [chartData, setChartData] = useState<Array<any>>();
   const [tick, setTick] = useState("");
-  const [chartType, setChartType] = useState<ChartTypes>(ChartTypes.line);
+  const [chartType, setChartType] = useState<ChartTypes>(
+    ChartTypes.candleStick
+  );
 
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const handlePlotData = async (e?: any) => {
@@ -105,6 +107,8 @@ const Forex: FC = () => {
                   placeholder="Chart Type"
                   className="text-gray-600 py-1 px-1 rounded bg-gray-50"
                 >
+                  <option value="CandleStick">CandleStick</option>
+
                   <option value="Area">Area</option>
                   <option value="Line">Line</option>
                 </select>
