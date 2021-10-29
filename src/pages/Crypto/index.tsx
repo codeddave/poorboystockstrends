@@ -73,7 +73,7 @@ const Crypto: FC = () => {
                 />
               ) : null}
             </div>
-            {searchQuery && showResults ? (
+            {searchQuery && showResults && cryptoData?.data.length ? (
               <ul className="mt-4 w-full lg:w-2/3 mx-auto h-64 bg-white flex flex-col divide-y rounded relative z-20">
                 {cryptoData?.data ? (
                   <div className="w-full h-64  bg-white z-30">
