@@ -41,7 +41,7 @@ const Forex: FC = () => {
         key={key}
         style={style}
         onClick={() => handleForexPairSelect(forexData?.data[index]?.symbol)}
-        className="px-3 text-xs md:text-lg text-black p hover:bg-blue-600 pb-6 hover:text-gray-200 w-fulL border-b h-50 absolute  t0p-0 z-50   flex"
+        className="px-3 text-xs md:text-lg text-black p hover:bg-blue-600  hover:text-gray-200  border-b   flex"
       >
         {forexData?.data[index]?.symbol}
       </li>
@@ -53,7 +53,9 @@ const Forex: FC = () => {
       case TabTypes.performance:
         return (
           <>
-            <p className="text-center text-xl pt-6 md:pt-12">Forex Search</p>
+            <p className="text-center text-xl pt-6 md:pt-12 border-t">
+              Forex Search
+            </p>
             <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
               <input
                 className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
@@ -72,7 +74,7 @@ const Forex: FC = () => {
               ) : null}
             </div>
             {searchQuery && showResults ? (
-              <ul className="mt-4 w-full lg:w-2/3 mx-auto h-full bg-white flex flex-col divide-y rounded relative z-20">
+              <ul className="mt-4 w-full lg:w-2/3 mx-auto h-64 bg-white flex flex-col divide-y rounded relative z-20">
                 {forexData?.data ? (
                   <div className="w-full h-64  bg-white z-30">
                     <AutoSizer>
@@ -115,7 +117,7 @@ const Forex: FC = () => {
   return (
     <div className="flex-grow">
       <div>
-        <nav className="flex mb-8 pb-2 flex-wrap w-full mx-auto border di px-2">
+        <nav className="flex mb-8 pb-2 flex-wrap w-full mx-auto border  px-1 md:px-2">
           <Tab
             onClick={() => onTabClick(TabTypes.performance)}
             width="1/6"
