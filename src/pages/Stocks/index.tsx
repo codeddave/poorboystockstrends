@@ -40,11 +40,17 @@ const Stocks: FC = () => {
   const fetchExchages = async () => {
     try {
       const response = await getExchangeList();
+      const eexchanges = response.data.map((exchange: any) => {
+        return exchange.name;
+      });
+      //@ts-ignore
+      const arrayOfExchanges = [...new Set(eexchanges)];
+
       setExchanges(
-        response.data.map((exchange: any) => {
+        arrayOfExchanges.map((exchange: any) => {
           return {
-            value: exchange.name,
-            label: exchange.name,
+            value: exchange,
+            label: exchange,
           };
         })
       );
@@ -53,6 +59,7 @@ const Stocks: FC = () => {
   useEffect(() => {
     fetchExchages();
   }, []);
+  console.log(exchanges);
 
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
@@ -83,9 +90,6 @@ const Stocks: FC = () => {
     setTick(ticker);
   };
 
-  const handleExchangeChange = (e: any) => {
-    console.log(e);
-  };
   const {
     fetchedData: stockData,
     isLoading,
@@ -96,7 +100,9 @@ const Stocks: FC = () => {
     handleSelectedItem: handleSelectedStock,
     handleCountryChange,
     country,
+    handleExchangeChange,
   } = useSearch(getStockInfo, setShowResults);
+
   console.log(country, ";klblj");
   console.log(countries);
   const renderTabDetails = (currentTab: TabTypes) => {
@@ -152,7 +158,6 @@ const Stocks: FC = () => {
                   />
                 </div>
               </div>
-
               <p className="text-center text-xl pt-6 md:pt-12 border-t ">
                 Stocks Search
               </p>
@@ -173,7 +178,10 @@ const Stocks: FC = () => {
                   />
                 ) : null}
               </div>
-              {showResults && !isLoading && !stockData?.data.length ? (
+              {showResults &&
+              !isLoading &&
+              !stockData?.data.length &&
+              searchQuery ? (
                 <p className="text-white pt-4 text-center">No results found</p>
               ) : null}
               <div className="flex justify-center mt-8">
@@ -232,14 +240,12 @@ const Stocks: FC = () => {
     }
   };
 
-  console.log(selectedStock);
-  console.log(stockData);
-
   const handleStockSelect = (symbol: string) => {
     handleSelectedStock(symbol);
     setShowResults(false);
     setSearchQuery(symbol);
   };
+
   const rowRenderer = ({
     key,
     index,

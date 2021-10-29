@@ -1,22 +1,62 @@
 //import { useState } from "react"
 import { FC, useState } from "react";
-import { getCryptoInfo } from "../../api";
+import { getCryptoInfo, getStockChartInfo } from "../../api";
 import Loader from "react-loader-spinner";
 import { useSearch } from "../../components/hooks";
 import { useTabs } from "../../components/hooks/useTabs";
-import { TabTypes } from "../../definitions";
+import { ChartTypes, TabTypes } from "../../definitions";
 import { List, AutoSizer } from "react-virtualized";
 import { Tab } from "../../components/Tab";
+import { toast } from "react-toastify";
+import DayPickerInput from "react-day-picker/DayPickerInput";
+import "react-day-picker/lib/style.css";
+import StocksChart from "../Stocks/StocksChart";
 
 const Crypto: FC = () => {
-  const [showResults, setShowResults] = useState(true);
+  const [isChartLoading, setIsChartLoading] = useState(false);
+
+  const [showResults, setShowResults] = useState(false);
+  const [startDate, setStartDate] = useState("2021-01-01");
+  const [endDate, setEndDate] = useState("2021-01-30");
+  const [chartData, setChartData] = useState<Array<any>>();
+  const [tick, setTick] = useState("");
+  const [chartType, setChartType] = useState<ChartTypes>(ChartTypes.line);
 
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
+
+  const handlePlotData = async (e?: any) => {
+    setChartData([]);
+    setTick("");
+    if (e) e.preventDefault();
+    const ticker = searchQuery || selectedCryptoPair;
+    setIsChartLoading(true);
+    const response = await getStockChartInfo(ticker, startDate, endDate);
+    if (response.status === "error") {
+      toast.error(response.message);
+    }
+    setChartData(response.values);
+    setIsChartLoading(false);
+    setShowResults(false);
+    setTick(ticker);
+  };
+
+  const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setChartType(e.target.value as ChartTypes);
+    handlePlotData();
+  };
+
+  const handleStartDateChange = (day: any) => {
+    setStartDate(new Date(day).toISOString().split("T")[0]);
+  };
+
+  const handleEndDateChange = (day: any) => {
+    setEndDate(new Date(day).toISOString().split("T")[0]);
+  };
 
   const {
     fetchedData: cryptoData,
     isLoading,
-    // selectedItem: selectedcryptoPair,
+    selectedItem: selectedCryptoPair,
     searchQuery,
     handleChange,
     handleSelectedItem: handleSelectedCryptoCurrency,
@@ -55,46 +95,105 @@ const Crypto: FC = () => {
       case TabTypes.performance:
         return (
           <>
-            <p className="text-center text-xl pt-6 md:pt-12 ">Crypto Search</p>
-            <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
-              <input
-                className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
-                placeholder="Search..."
-                onChange={handleChange}
-                value={searchQuery}
-              />
+            <form onSubmit={handlePlotData}>
+              <div className="w-40 mb-4 ">
+                <select
+                  name="chartType"
+                  id="chartType"
+                  value={chartType}
+                  onChange={handleChanges}
+                  placeholder="Chart Type"
+                  className="text-gray-600 py-1 px-1 rounded bg-gray-50"
+                >
+                  <option value="Area">Area</option>
+                  <option value="Line">Line</option>
+                </select>
+              </div>
+              <div className=" text-gray-700 mb-2 grid  grid-cols-2 gap-4 md:gap-0 md:grid-cols-4  items-center w-full">
+                <div className="">
+                  <p className="text-white pb-2 text-sm">Start Date</p>
+                  <DayPickerInput
+                    onDayChange={handleStartDateChange}
+                    inputProps={{ style: { width: 110, paddingLeft: 5 } }}
+                  />
+                </div>
 
-              {isLoading ? (
-                <Loader
-                  type="TailSpin"
-                  color="#000000"
-                  height={25}
-                  width={30}
+                <div className="sm:ml-6  mt-3 sm:mt-0">
+                  <p className="text-white  pb-2 text-sm">End Date</p>
+                  <DayPickerInput
+                    onDayChange={handleEndDateChange}
+                    inputProps={{ style: { width: 110, paddingLeft: 5 } }}
+                  />
+                </div>
+              </div>
+
+              <p className="text-center text-xl pt-6 md:pt-12 ">
+                Crypto Search
+              </p>
+              <div className=" w-full lg:w-2/3 mx-auto bg-white rounded flex items-center pr-2 mt-2 shadow-2xl">
+                <input
+                  className="w-full  mx-auto text-black py-1.5 pl-2 rounded outline-none "
+                  placeholder="Search..."
+                  onChange={handleChange}
+                  value={searchQuery}
+                />
+
+                {isLoading ? (
+                  <Loader
+                    type="TailSpin"
+                    color="#000000"
+                    height={25}
+                    width={30}
+                  />
+                ) : null}
+              </div>
+              {showResults &&
+              !isLoading &&
+              !cryptoData?.data.length &&
+              searchQuery ? (
+                <p className="text-white pt-4 text-center">No results found</p>
+              ) : null}
+              <div className="flex justify-center mt-8">
+                <button
+                  type="submit"
+                  className="border-white border py-2  rounded text-white mx-auto w-24  hover:bg-blue-50 hover:text-gray-600 "
+                >
+                  Plot
+                </button>
+              </div>
+              {searchQuery && showResults && cryptoData?.data.length ? (
+                <ul className="mt-4 w-full lg:w-2/3 mx-auto h-64 bg-white flex flex-col divide-y rounded relative z-20">
+                  {cryptoData?.data ? (
+                    <div className="w-full h-64  bg-white z-30">
+                      <AutoSizer>
+                        {({ width, height }) => {
+                          return (
+                            <List
+                              width={width}
+                              height={height}
+                              rowCount={cryptoData!.data.length}
+                              rowHeight={30}
+                              rowRenderer={rowRenderer}
+                              className="w-full"
+                            />
+                          );
+                        }}
+                      </AutoSizer>
+                    </div>
+                  ) : null}
+                </ul>
+              ) : null}
+              {(selectedCryptoPair || searchQuery) && chartData?.length ? (
+                <StocksChart
+                  chartType={chartType}
+                  ticker={tick || selectedCryptoPair}
+                  startDate={startDate}
+                  endDate={endDate}
+                  chartData={chartData}
+                  isLoading={isChartLoading}
                 />
               ) : null}
-            </div>
-            {searchQuery && showResults && cryptoData?.data.length ? (
-              <ul className="mt-4 w-full lg:w-2/3 mx-auto h-64 bg-white flex flex-col divide-y rounded relative z-20">
-                {cryptoData?.data ? (
-                  <div className="w-full h-64  bg-white z-30">
-                    <AutoSizer>
-                      {({ width, height }) => {
-                        return (
-                          <List
-                            width={width}
-                            height={height}
-                            rowCount={cryptoData!.data.length}
-                            rowHeight={30}
-                            rowRenderer={rowRenderer}
-                            className="w-full"
-                          />
-                        );
-                      }}
-                    </AutoSizer>
-                  </div>
-                ) : null}
-              </ul>
-            ) : null}
+            </form>
           </>
         );
       case TabTypes.dailyMatchTrend:

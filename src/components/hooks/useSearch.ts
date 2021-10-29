@@ -14,27 +14,30 @@ export const useSearch = (
   fetchedData: null | { data: any[] };
   setSearchQuery: any;
   handleCountryChange: any;
+  handleExchangeChange: any;
   setCountry: any;
   country: string;
+  exchange: string;
 } => {
   const [searchQuery, setSearchQuery] = useState("");
   const [fetchedData, setFetchedData] = useState<null | { data: any[] }>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [country, setCountry] = useState("");
+  const [exchange, setExchange] = useState("");
 
   const test = React.useMemo(
     () =>
-      debounce(async (symbol: any, country?: string) => {
+      debounce(async (symbol: any, country?: string, exchange?: string) => {
         if (symbol === "") return;
         setIsLoading(true);
         console.log(country);
 
-        const response = await apiFn(symbol, country);
-        setIsLoading(false);
+        const response = await apiFn(symbol, country, exchange);
 
         setFetchedData(response);
         if (setShowResults) setShowResults(true);
+        setIsLoading(false);
       }, 800),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -50,6 +53,7 @@ export const useSearch = (
     }
   };
   console.log(country, ";klkvdkvlkdnvlkdbvdlkvbdlkvb");
+
   const handleCountryChange = (selectedOption: any) => {
     setCountry(selectedOption.value);
     test(searchQuery, selectedOption.value);
@@ -57,12 +61,10 @@ export const useSearch = (
     console.log(country, "from stock test");
   };
 
-  /* const handleCountryChange = (e: any) => {
-    setCountry(e.target.value);
-    test(searchQuery, e.target.value);
-
-    console.log(country, "from stock test");
-  }; */
+  const handleExchangeChange = (selectedOption: any) => {
+    setExchange(selectedOption.value);
+    test(searchQuery, country, selectedOption.value);
+  };
 
   const handleSelectedItem = (item: string) => {
     setSelectedItem(item);
@@ -78,5 +80,7 @@ export const useSearch = (
     handleCountryChange,
     setCountry,
     country,
+    exchange,
+    handleExchangeChange,
   };
 };
