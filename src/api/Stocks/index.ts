@@ -23,6 +23,8 @@ export const getStockInfo = async (
         return `https://pbstbackend.herokuapp.com/v2/search_stock?country=${country}&name=${symbol}&exchange=${exchange}`;
       } else if (country) {
         return `https://pbstbackend.herokuapp.com/v2/search_stock?country=${country}&name=${symbol}`;
+      } else if (exchange) {
+        return `https://pbstbackend.herokuapp.com/v2/search_stock?exchange=${exchange}&name=${symbol}`;
       } else {
         return `https://pbstbackend.herokuapp.com/v2/search_stock?name=${symbol}`;
       }

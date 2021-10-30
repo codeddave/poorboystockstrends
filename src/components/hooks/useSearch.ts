@@ -46,8 +46,12 @@ export const useSearch = (
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchQuery(e.target.value);
 
-    if (country) {
+    if (country && exchange) {
+      test(e.target.value, country, exchange);
+    } else if (country) {
       test(e.target.value, country);
+    } else if (exchange) {
+      test(e.target.value, undefined, exchange);
     } else {
       test(e.target.value);
     }
