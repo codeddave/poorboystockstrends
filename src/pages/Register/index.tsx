@@ -11,7 +11,7 @@ const initialValues = {
 };
 const Register = () => {
   return (
-    <div className="mx-auto md:3/4 px-2 md:px-0">
+    <div className="mx-auto w-full md:w-3/5 px-2 md:px-0 mnf">
       <p className="text-center text-2xl mb-5 tracking-wider">Register</p>
       <Formik
         initialValues={initialValues}
