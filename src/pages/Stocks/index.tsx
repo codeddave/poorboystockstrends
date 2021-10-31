@@ -14,6 +14,7 @@ import "react-day-picker/lib/style.css";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import { countries } from "../../utils";
+import DailyMatchTrend from "../../components/Data/DailyMatchTrend";
 
 const Stocks: FC = () => {
   const [isChartLoading, setIsChartLoading] = useState(false);
@@ -228,7 +229,7 @@ const Stocks: FC = () => {
           </>
         );
       case TabTypes.dailyMatchTrend:
-        return <p>Daily Match Trend</p>;
+        return <DailyMatchTrend />;
       case TabTypes.correlation:
         return <p>Correlation</p>;
       case TabTypes.sameMonthCorrelation:

@@ -3,3 +3,10 @@ export enum ChartTypes {
   area = "Area",
   line = "Line",
 }
+
+export enum GraphValues {
+  high = " High",
+  low = "Low",
+  open = "open",
+  close = "Close",
+}
