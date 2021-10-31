@@ -30,6 +30,7 @@ const Stocks: FC = () => {
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
   );
+  const [graphValue, setGraphValue] = useState<any>("close");
 
   const actual = countries.map((country) => {
     return {
@@ -64,6 +65,10 @@ const Stocks: FC = () => {
 
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
+    if (tick) handlePlotData();
+  };
+  const handleGraphValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setGraphValue(e.target.value);
     handlePlotData();
   };
   const handleStartDateChange = (day: any) => {
@@ -112,7 +117,7 @@ const Stocks: FC = () => {
         return (
           <>
             <form onSubmit={handlePlotData}>
-              <div className="w-40 mb-4 ">
+              <div className="mb-4 ">
                 <select
                   name="chartType"
                   id="chartType"
@@ -125,6 +130,21 @@ const Stocks: FC = () => {
                   <option value="Area">Area</option>
                   <option value="Line">Line</option>
                 </select>
+                {chartType !== "CandleStick" ? (
+                  <select
+                    name="grapghValue"
+                    id="grapghValue"
+                    value={graphValue}
+                    onChange={handleGraphValue}
+                    placeholder="Chart Type"
+                    className="text-gray-600 py-1 px-1 rounded bg-gray-50 ml-5"
+                  >
+                    <option value="high">High</option>
+                    <option value="low">Low</option>
+                    <option value="open">Open</option>
+                    <option value="close">Close</option>
+                  </select>
+                ) : null}
               </div>
               <div className=" text-gray-700 mb-2 grid  grid-cols-2 gap-4 md:gap-0 md:grid-cols-4  items-center w-full">
                 <div className="">
@@ -134,8 +154,7 @@ const Stocks: FC = () => {
                     inputProps={{ style: { width: 110, paddingLeft: 5 } }}
                   />
                 </div>
-
-                <div className="sm:ml-6  mt-3 sm:mt-0">
+                <div className=" mt-3 sm:mt-0">
                   <p className="text-white  pb-2 text-sm">End Date</p>
                   <DayPickerInput
                     onDayChange={handleEndDateChange}
@@ -146,7 +165,7 @@ const Stocks: FC = () => {
                   <Select
                     options={actual}
                     onChange={handleCountryChange}
-                    className="w-32 sm:w-40 mt-6"
+                    className="w-32 sm:w-36 mt-6"
                     placeholder="Country"
                   />
                 </div>
@@ -154,7 +173,7 @@ const Stocks: FC = () => {
                   <Select
                     options={exchanges}
                     onChange={handleExchangeChange}
-                    className="w-32 sm:w-40 mt-6"
+                    className="w-32 sm:w-36 mt-6"
                     placeholder="Exchange"
                   />
                 </div>
@@ -223,6 +242,7 @@ const Stocks: FC = () => {
                   endDate={endDate}
                   chartData={chartData}
                   isLoading={isChartLoading}
+                  graphValue={graphValue}
                 />
               ) : null}
             </form>

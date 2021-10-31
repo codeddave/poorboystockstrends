@@ -15,6 +15,7 @@ type Props = {
   endDate: string;
   chartData: any;
   isLoading: boolean;
+  graphValue?: string;
 };
 
 let dataPoints1: any = [];
@@ -26,6 +27,7 @@ const StocksChart: FC<Props> = ({
   endDate,
   chartData,
   isLoading,
+  graphValue,
 }) => {
   //get access to ticker and the chart type from the context would implement this later
   const StockChartRef = useRef();
@@ -48,17 +50,20 @@ const StocksChart: FC<Props> = ({
       console.log(dataPoints1);
     }
   };
-  const lineChartPush = (chartData: any) => {
-    dataPoints1 = [];
-    if (chartData) {
-      for (let i = 0; i < chartData.length; i++) {
-        dataPoints1.push({
-          x: new Date(chartData![i].datetime),
-          y: Number(chartData![i].close),
-        });
+  const lineChartPush = useCallback(
+    (chartData: any) => {
+      dataPoints1 = [];
+      if (chartData) {
+        for (let i = 0; i < chartData.length; i++) {
+          dataPoints1.push({
+            x: new Date(chartData![i].datetime),
+            y: Number(chartData![i][graphValue!]),
+          });
+        }
       }
-    }
-  };
+    },
+    [graphValue]
+  );
 
   useEffect(() => {
     if (chartType === ChartTypes.candleStick) {
@@ -69,7 +74,7 @@ const StocksChart: FC<Props> = ({
       console.log("`lineeeeee");
     }
     //makes the call everytime the ticker changes, need that to happen for chart type
-  }, [chartData, chartType]);
+  }, [chartData, chartType, lineChartPush]);
 
   const handleChartOptions = useCallback(() => {
     if (chartType === ChartTypes.candleStick) {

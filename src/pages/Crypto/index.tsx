@@ -23,6 +23,7 @@ const Crypto: FC = () => {
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
   );
+  const [graphValue, setGraphValue] = useState<any>("close");
 
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
 
@@ -44,9 +45,12 @@ const Crypto: FC = () => {
 
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
+    if (tick) handlePlotData();
+  };
+  const handleGraphValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setGraphValue(e.target.value);
     handlePlotData();
   };
-
   const handleStartDateChange = (day: any) => {
     setStartDate(new Date(day).toISOString().split("T")[0]);
   };
@@ -99,7 +103,7 @@ const Crypto: FC = () => {
         return (
           <>
             <form onSubmit={handlePlotData}>
-              <div className="w-40 mb-4 ">
+              <div className="mb-4 ">
                 <select
                   name="chartType"
                   id="chartType"
@@ -113,6 +117,21 @@ const Crypto: FC = () => {
                   <option value="Area">Area</option>
                   <option value="Line">Line</option>
                 </select>
+                {chartType !== "CandleStick" ? (
+                  <select
+                    name="grapghValue"
+                    id="grapghValue"
+                    value={graphValue}
+                    onChange={handleGraphValue}
+                    placeholder="Chart Type"
+                    className="text-gray-600 py-1 px-1 rounded bg-gray-50 ml-5"
+                  >
+                    <option value="high">High</option>
+                    <option value="low">Low</option>
+                    <option value="open">Open</option>
+                    <option value="close">Close</option>
+                  </select>
+                ) : null}
               </div>
               <div className=" text-gray-700 mb-2 grid  grid-cols-2 gap-4 md:gap-0 md:grid-cols-4  items-center w-full">
                 <div className="">
@@ -196,6 +215,7 @@ const Crypto: FC = () => {
                   endDate={endDate}
                   chartData={chartData}
                   isLoading={isChartLoading}
+                  graphValue={graphValue}
                 />
               ) : null}
             </form>

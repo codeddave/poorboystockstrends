@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 import StocksChart from "../Stocks/StocksChart";
+import DailyMatchTrend from "../../components/Data/DailyMatchTrend";
 
 //move all chart related logic to a hook
 const Forex: FC = () => {
@@ -24,6 +25,7 @@ const Forex: FC = () => {
   const [chartType, setChartType] = useState<ChartTypes>(
     ChartTypes.candleStick
   );
+  const [graphValue, setGraphValue] = useState<any>("close");
 
   const { onTabClick, tab } = useTabs<TabTypes>(TabTypes.performance);
   const handlePlotData = async (e?: any) => {
@@ -44,6 +46,10 @@ const Forex: FC = () => {
 
   const handleChanges = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setChartType(e.target.value as ChartTypes);
+    if (tick) handlePlotData();
+  };
+  const handleGraphValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setGraphValue(e.target.value);
     handlePlotData();
   };
 
@@ -98,7 +104,7 @@ const Forex: FC = () => {
         return (
           <>
             <form onSubmit={handlePlotData}>
-              <div className="w-40 mb-4 ">
+              <div className=" mb-4 ">
                 <select
                   name="chartType"
                   id="chartType"
@@ -112,6 +118,22 @@ const Forex: FC = () => {
                   <option value="Area">Area</option>
                   <option value="Line">Line</option>
                 </select>
+
+                {chartType !== "CandleStick" ? (
+                  <select
+                    name="grapghValue"
+                    id="grapghValue"
+                    value={graphValue}
+                    onChange={handleGraphValue}
+                    placeholder="Chart Type"
+                    className="text-gray-600 py-1 px-1 rounded bg-gray-50 ml-5"
+                  >
+                    <option value="high">High</option>
+                    <option value="low">Low</option>
+                    <option value="open">Open</option>
+                    <option value="close">Close</option>
+                  </select>
+                ) : null}
               </div>
               <div className=" text-gray-700 mb-2 grid  grid-cols-2 gap-4 md:gap-0 md:grid-cols-4  items-center w-full">
                 <div className="">
@@ -193,13 +215,14 @@ const Forex: FC = () => {
                   endDate={endDate}
                   chartData={chartData}
                   isLoading={isChartLoading}
+                  graphValue={graphValue}
                 />
               ) : null}
             </form>
           </>
         );
       case TabTypes.dailyMatchTrend:
-        return <p>Daily Match Trend</p>;
+        return <DailyMatchTrend />;
       case TabTypes.correlation:
         return <p>Correlation</p>;
       case TabTypes.sameMonthCorrelation:
